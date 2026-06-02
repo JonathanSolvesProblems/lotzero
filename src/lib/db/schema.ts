@@ -1,6 +1,8 @@
 // Aurora DSQL schema. Deliberately FK-free and sequence-free because DSQL does
-// not support FOREIGN KEY constraints or SERIAL/sequences. Referential
-// integrity is enforced in the strongly-consistent transactions in domain/.
+// not support FOREIGN KEY constraints or SERIAL/sequences, and JSON/JSONB-free
+// because DSQL does not support JSON types. Referential integrity is enforced in
+// the strongly-consistent transactions in domain/. DSQL also allows only one DDL
+// statement per transaction, so the client applies each CREATE TABLE separately.
 // This exact DDL runs unchanged on PGlite (local) and Aurora DSQL (prod).
 
 export const SCHEMA_SQL = `

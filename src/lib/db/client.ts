@@ -92,8 +92,20 @@ async function initDsql(): Promise<Db> {
     },
   };
 
-  await db.query(SCHEMA_SQL);
+  // DSQL permits exactly ONE DDL statement per transaction, so each CREATE TABLE
+  // must be sent on its own (a multi-DDL batch is rejected). CREATE TABLE IF NOT
+  // EXISTS keeps this idempotent across cold starts.
+  for (const stmt of splitStatements(SCHEMA_SQL)) {
+    await db.query(stmt);
+  }
   return db;
+}
+
+function splitStatements(sql: string): string[] {
+  return sql
+    .split(";")
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
 }
 
 // ---- PGlite backend -------------------------------------------------------

@@ -74,6 +74,10 @@ OCC error and are automatically retried, re-checking fresh state.
 DSQL-aware data modeling (see [`src/lib/db/schema.ts`](src/lib/db/schema.ts)):
 - **No foreign keys** (DSQL doesn't support them) — integrity is enforced in the transactions.
 - **No sequences / `SERIAL`** — IDs are application-generated.
+- **No JSON/JSONB columns** — DSQL doesn't support JSON types.
+- **One DDL statement per transaction** — the client applies each `CREATE TABLE` separately.
+- **`SELECT … FOR UPDATE`** is used as DSQL intends it: not a lock, but a way to enroll the
+  read rows into the OCC conflict-check set, so a racing writer loses cleanly at commit.
 - **Async indexes** are applied out-of-band ([`infra/dsql-indexes.sql`](infra/dsql-indexes.sql)).
 
 The core logic lives in [`src/lib/domain/bids.ts`](src/lib/domain/bids.ts).
