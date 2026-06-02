@@ -1,0 +1,13 @@
+{
+  "_comment": "LotZero firehose single-table. Create with: aws dynamodb create-table --cli-input-json file://infra/dynamodb-table.json",
+  "TableName": "lotzero_firehose",
+  "BillingMode": "PAY_PER_REQUEST",
+  "AttributeDefinitions": [
+    { "AttributeName": "pk", "AttributeType": "S" },
+    { "AttributeName": "sk", "AttributeType": "S" }
+  ],
+  "KeySchema": [
+    { "AttributeName": "pk", "KeyType": "HASH" },
+    { "AttributeName": "sk", "KeyType": "RANGE" }
+  ]
+}

@@ -6,16 +6,26 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "node scripts/seed.mjs",
+    "loadtest": "node scripts/loadtest.mjs"
   },
   "dependencies": {
+    "@aws-sdk/client-dsql": "^3.1058.0",
+    "@aws-sdk/client-dynamodb": "^3.1058.0",
+    "@aws-sdk/lib-dynamodb": "^3.1058.0",
+    "@aws/aurora-dsql-node-postgres-connector": "^0.1.9",
+    "@electric-sql/pglite": "^0.4.6",
+    "@vercel/functions": "^3.6.1",
     "next": "16.2.7",
+    "pg": "^8.21.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
