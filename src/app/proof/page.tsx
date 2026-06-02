@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { formatUSD } from "@/lib/money";
 import { REGION_FLAG } from "@/lib/format";
+import { RegionDemo } from "@/components/region-demo";
 
 interface ProofAttempt {
   i: number;
@@ -122,6 +123,8 @@ export default function ProofPage() {
       </div>
 
       {report && <Report report={report} />}
+
+      <RegionDemo />
     </div>
   );
 }

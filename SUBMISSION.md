@@ -35,7 +35,7 @@ ledger, settlement) and Amazon DynamoDB (real-time social firehose).
 
 - [ ] ~3–5 min demo video (script below), uploaded to YouTube
 - [ ] Published Vercel project link + Vercel Team ID
-- [ ] Architecture diagram (in [README.md](README.md); export the rendered Mermaid to PNG)
+- [ ] Architecture diagram — ready at [docs/architecture.png](docs/architecture.png) (regenerate with `node -e` + sharp from `docs/architecture.svg` if edited)
 - [ ] Screenshot: Vercel **Storage / Integration** configuration showing the AWS database
 - [ ] Screenshot: the `/proof` console showing `Invariant held · 0 oversells · 0 double-spends`
 - [ ] Text description (above) with the AWS databases named
@@ -63,6 +63,12 @@ retry, IAM-token auth via the official connector, multi-Region peered cluster.
 Regions, 1 unit. Result: **1 winner, 0 oversells, invariant held**. Run **double-spend**: one
 buyer funded for one purchase tries to win 150 lots at once. Result: **1 winner, 0
 double-spends, balance never negative**. "This is the measured guarantee, not a claim."
+
+**3:15 — Active-active, live (30s) [if two-Region cluster provisioned].** Still on `/proof`,
+hit "Write in us-east-1 → read in eu-west-1". Show the value written through one Region's
+endpoint and read straight back through the other, identical, with the cross-Region read
+latency. "Two Regions, one strongly-consistent database. That's Aurora DSQL." (Trim the close
+to ~10s to stay under 5 min.)
 
 **3:45 — Close (15s).** "Built with v0, deployed on Vercel, on Aurora DSQL and DynamoDB. Same
 code runs locally on an embedded Postgres and in production on DSQL. Zero oversells. Zero

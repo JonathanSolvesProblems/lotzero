@@ -42,6 +42,8 @@ and we pair it with DynamoDB for the part that just needs to be fast and huge.
 
 ## Architecture
 
+![LotZero architecture](docs/architecture.png)
+
 ```mermaid
 flowchart TB
   subgraph B["Browsers worldwide"]
@@ -167,13 +169,33 @@ Nothing else in the app changes — same code, same SQL.
 - **Originality** — the genuine insight that Aurora DSQL turns a previously-impossible
   weekend build (globally-consistent contention) into a CRUD app, proven, not asserted.
 
-## Impact (figures to cite in the submission)
+## Impact
 
-Live/social commerce is a large, fast-growing channel, and overselling is a concrete,
-quantifiable failure (cancellations, refunds, chargebacks, lost trust). Add 4–8 cited figures
-in the final submission, e.g. live-commerce GMV and growth (Coresight Research / McKinsey),
-cart-abandonment and oversell-cancellation costs (Baymard Institute), and the conversion cost
-of latency (Akamai/Google). *Verify each source before submitting.*
+Live commerce is large and growing fast, and the two failure modes LotZero removes —
+**overselling** and **global latency** — are both quantifiably expensive.
+
+- **Big, fast-growing market.** US livestream shopping reached roughly **$50B** in GMV in 2025
+  and is projected to exceed **5% of US digital commerce** in 2026. The global live-commerce
+  market was about **$172B in 2025**, growing at a **~41% CAGR**.
+- **Overselling is a real, costly failure.** Cart/checkout abandonment averages **~70%**, which
+  Baymard estimates at **~$260B/yr of recoverable revenue in the US** alone. Overselling a
+  limited drop turns a completed sale into a cancellation, refund, and a lost customer — the
+  exact failure LotZero makes *structurally impossible*.
+- **Global latency directly costs conversion.** Amazon found every **100ms** of added latency
+  cost **~1% of sales**; Akamai measured roughly a **7% conversion drop per 100ms**; and
+  Google/Deloitte's *Milliseconds Make Millions* found a **0.1s speedup lifted retail
+  conversion ~8%**. A single-Region database taxes every distant buyer with this latency;
+  Aurora DSQL's active-active local writes remove it *while staying strongly consistent*.
+
+LotZero is the rare design that fixes both at once: correctness (no oversell/double-spend) and
+low-latency local writes everywhere, on one operationally proven stack.
+
+Sources: live commerce — [Statista](https://www.statista.com/topics/8752/livestream-commerce/),
+[Grand View Research](https://www.grandviewresearch.com/industry-analysis/live-commerce-market-report);
+abandonment — [Baymard Institute](https://baymard.com/lists/cart-abandonment-rate);
+latency — [Amazon/Conductor](https://www.conductor.com/academy/page-speed-resources/faq/amazon-page-speed-study/),
+Akamai, [Google × Deloitte, *Milliseconds Make Millions*](https://www.deloitte.com/uk/en/Industries/consumer/research/milliseconds-make-millions.html).
+*Re-confirm each figure against the primary source before final submission.*
 
 ## Honest limitations / path to production
 
