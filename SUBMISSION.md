@@ -33,46 +33,51 @@ ledger, settlement) and Amazon DynamoDB (real-time social firehose).
 
 ## Required submission checklist
 
-- [ ] ~3–5 min demo video (script below), uploaded to YouTube
+- [ ] **Under 3:00** demo video (script below), uploaded to YouTube (public, not unlisted)
 - [ ] Published Vercel project link + Vercel Team ID
 - [ ] Architecture diagram — ready at [docs/architecture.png](docs/architecture.png) (regenerate with `node -e` + sharp from `docs/architecture.svg` if edited)
-- [ ] Screenshot: Vercel **Storage / Integration** configuration showing the AWS database
-- [ ] Screenshot: the `/proof` console showing `Invariant held · 0 oversells · 0 double-spends`
+- [ ] Screenshot proving AWS Database usage — either the **AWS Console** showing the Aurora DSQL
+      cluster + DynamoDB table, or the **Vercel Storage / Integration** config (either is accepted)
 - [ ] Text description (above) with the AWS databases named
 
 ---
 
-## Demo video script (~4 minutes)
+## Demo video script (target 2:45, hard cap 3:00)
 
-**0:00 — The problem (30s).** "Two shoppers on opposite sides of the world both grab the last
-item at the same instant. Who gets it? On most weekend stacks the honest answer is: maybe
-both, and someone gets a refund email later. LotZero makes that impossible."
+Hard constraint: the video must be **under 3 minutes**. Lead with the wow, keep one feature per
+beat, and let the README/architecture image carry the rest. Record against the **live Vercel
+URL on real Aurora DSQL + DynamoDB** (not localhost) — these 10 database judges will look.
 
-**0:30 — The product (60s).** Open the live board. Show lots: an ascending auction, a Dutch
-falling-price drop, a 50-unit fixed drop. Open a lot. Bid as **aria** from **us-east-1** —
-you're the high bidder, funds show as *held* in the wallet. Switch identity to **kenji** in
-**ap-northeast-1**, bid higher — aria's hold is released, kenji's is placed. Point out the
-live chat, presence, and reactions: "this side is DynamoDB."
+**0:00–0:18 — Hook + problem (open on the race).** Two browser windows side by side, two users
+in two Regions, on the last unit of a drop. Both click at once. "On most stacks, both might win
+and someone gets a refund email. Watch." One wins, one is cleanly rejected, live. "That's
+LotZero — global live auctions where exactly one person can win, ever."
 
-**1:30 — The architecture (60s).** Show the diagram. "Two planes. Money on Aurora DSQL —
-active-active, strongly consistent. The social firehose on DynamoDB. The consistency boundary
-is the whole idea." Mention DSQL specifics you respected: no foreign keys, no sequences, OCC
-retry, IAM-token auth via the official connector, multi-Region peered cluster.
+**0:18–0:50 — The product (who/what).** Live board. Open a Dutch falling-price lot, claim it
+from Tokyo as the price ticks down. Open an English lot, bid — funds show as *held* in the
+wallet; another user outbids and the hold releases. "Money on Aurora DSQL. The live chat,
+presence and reactions next to it are on DynamoDB."
 
-**2:30 — The proof (75s).** Open `/proof`. Run the **oversell** race: 200 buyers across five
-Regions, 1 unit. Result: **1 winner, 0 oversells, invariant held**. Run **double-spend**: one
-buyer funded for one purchase tries to win 150 lots at once. Result: **1 winner, 0
-double-spends, balance never negative**. "This is the measured guarantee, not a claim."
+**0:50–1:35 — The proof (the differentiator).** Open `/proof`. Run **oversell**: 200 buyers
+across 5 Regions, 1 unit → **1 winner, 0 oversells**. Run **double-spend**: one buyer funded for
+one purchase races 150 lots → **1 winner, 0 double-spends, never negative**. "This is measured
+under real concurrency, not claimed."
 
-**3:15 — Active-active, live (30s) [if two-Region cluster provisioned].** Still on `/proof`,
-hit "Write in us-east-1 → read in eu-west-1". Show the value written through one Region's
-endpoint and read straight back through the other, identical, with the cross-Region read
-latency. "Two Regions, one strongly-consistent database. That's Aurora DSQL." (Trim the close
-to ~10s to stay under 5 min.)
+**1:35–2:05 — Active-active, live [if two-Region cluster is up].** Still on `/proof`, hit "Write
+in us-east-1 → read in eu-west-1". Value written through one Region's endpoint, read straight
+back through the other, identical, with the cross-Region latency. "Two Regions, one
+strongly-consistent database. That's Aurora DSQL." *(If single-Region, replace with a 15s
+architecture-diagram beat instead.)*
 
-**3:45 — Close (15s).** "Built with v0, deployed on Vercel, on Aurora DSQL and DynamoDB. Same
-code runs locally on an embedded Postgres and in production on DSQL. Zero oversells. Zero
-double-spends. That's LotZero."
+**2:05–2:35 — Craft + why it's shippable.** Cut to the architecture diagram. "Deliberate
+two-store design. On DSQL: no foreign keys, no sequences, OCC with automatic retry, IAM-token
+auth via Vercel OIDC. Same code runs locally on embedded Postgres and in production on DSQL."
+
+**2:35–2:50 — Close.** Show the live Vercel URL. "Built with v0, deployed on Vercel, on Aurora
+DSQL and DynamoDB. Shippable today. Zero oversells, zero double-spends. That's LotZero."
+
+> Negative-control option (if you have 5s to spare): on a sold-out lot, click claim again on
+> camera and show the clean rejection. Proves the system stays correct, not just functional.
 
 **Negative-control beat (optional, strong):** on a sold-out lot, click claim again on camera
 and show the clean rejection. Proves the system stays silent when it should.
