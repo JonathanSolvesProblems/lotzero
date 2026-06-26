@@ -55,8 +55,8 @@ export default function ProofPage() {
   return (
     <div className="space-y-6">
       <div className="max-w-3xl space-y-2">
-        <span className="chip">🧪 live correctness proof</span>
-        <h1 className="text-3xl font-bold">Fire a global race. Watch the invariant hold.</h1>
+        <span className="chip">Live correctness proof</span>
+        <h1 className="display text-4xl leading-tight">Fire a global race. Watch the invariant hold.</h1>
         <p className="text-[var(--muted)]">
           This spins up many buyers across five AWS Regions and makes them collide on a scarce lot at the exact same
           moment — the situation an eventually-consistent store gets wrong. Aurora DSQL&apos;s strongly-consistent,

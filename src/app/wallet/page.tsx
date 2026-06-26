@@ -60,7 +60,7 @@ export default function WalletPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">
+        <h1 className="display text-3xl">
           {user.avatar} {user.handle}&apos;s wallet
         </h1>
         <p className="text-sm text-[var(--muted)]">

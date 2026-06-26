@@ -147,8 +147,8 @@ export function AuctionRoom({ lotId }: { lotId: string }) {
               </div>
 
               <div>
-                <h1 className="text-2xl font-bold">{lot.title}</h1>
-                <p className="mt-1 text-sm text-[var(--muted)]">{lot.description}</p>
+                <h1 className="display text-3xl">{lot.title}</h1>
+                <p className="mt-2 text-sm text-[var(--muted)]">{lot.description}</p>
               </div>
 
               <PricePanel snap={snap} settled={settled} isClaim={isClaim} remaining={remaining} />

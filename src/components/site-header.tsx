@@ -18,12 +18,31 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[rgba(7,8,12,0.72)] backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4">
-        <Link href="/" className="flex items-center gap-2 font-bold tracking-tight">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-[linear-gradient(180deg,#8a6dff,#6b4cf0)] text-sm">
-            L0
-          </span>
-          <span className="text-lg">
-            Lot<span className="gradient-text">Zero</span>
+        <Link href="/" className="group flex items-center gap-2.5">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
+            {/* auctioneer's gavel mark */}
+            <rect x="2.5" y="18.5" width="13" height="2.6" rx="1.3" fill="var(--gold)" />
+            <rect
+              x="12.2"
+              y="4.2"
+              width="7.2"
+              height="4.2"
+              rx="1.1"
+              transform="rotate(45 12.2 4.2)"
+              fill="var(--gold)"
+            />
+            <rect
+              x="8.6"
+              y="9.0"
+              width="2.4"
+              height="9.2"
+              rx="1.2"
+              transform="rotate(45 8.6 9.0)"
+              fill="var(--gold-soft)"
+            />
+          </svg>
+          <span className="display text-xl tracking-tight text-[var(--paper)]">
+            Lot<span className="text-[var(--gold)]">Zero</span>
           </span>
         </Link>
 
