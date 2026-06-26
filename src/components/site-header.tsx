@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useIdentity } from "./identity";
+import { ThemeToggle } from "./theme-toggle";
 import { formatUSD } from "@/lib/money";
 
 const NAV = [
@@ -64,6 +65,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
+          <ThemeToggle />
           {user && (
             <div className="hidden items-center gap-1 rounded-xl border border-[var(--border-2)] bg-[var(--surface-2)] px-3 py-1.5 text-sm md:flex">
               <span className="text-[var(--muted)]">balance</span>

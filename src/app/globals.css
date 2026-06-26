@@ -219,3 +219,29 @@ body::after {
 ::selection {
   background: rgba(15, 158, 104, 0.2);
 }
+
+/* ---- dark theme (obsidian + emerald) ---- */
+:root[data-theme="dark"] {
+  --ink: #0a0c0b;
+  --ink-2: #0e110f;
+  --surface: #111613;
+  --surface-2: #171d19;
+  --line: #232a25;
+  --line-2: #313a34;
+  --gold: #1fae72;
+  --gold-soft: #4ad394;
+  --gold-deep: #137a4f;
+  --paper: #f2f4f0;
+  --muted: #9aa39c;
+  --muted-2: #69716a;
+  --good: #3ecf8e;
+  --bad: #e5705f;
+  --warn: #e0b45a;
+  --shadow: 0 10px 30px -22px rgba(0, 0, 0, 0.7);
+}
+:root[data-theme="dark"] .topbar {
+  background: rgba(10, 12, 11, 0.72);
+}
+:root[data-theme="dark"] .btn-primary {
+  color: #04140c;
+}
