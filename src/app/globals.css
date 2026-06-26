@@ -1,29 +1,29 @@
 @import "tailwindcss";
 
 /*
-  LotZero design system — "auction house meets trading terminal".
-  Palette: obsidian ink · emerald accent · ivory. Disciplined, money-coded, premium.
+  LotZero design system — light "gallery catalog" aesthetic.
+  Palette: porcelain paper · deep ink · emerald accent. Premium, editorial, calm.
   Editorial serif (Fraunces) for display, grotesque for UI, mono for numerals.
-  Hairline rules + lot-number motif + faint grain instead of glossy gradients.
+  Hairline rules + lot-number motif + soft card shadows + faint paper grain.
 */
 
 :root {
-  --ink: #0a0c0b;
-  --ink-2: #0e110f;
-  --surface: #111613;
-  --surface-2: #171d19;
-  --line: #232a25;
-  --line-2: #313a34;
+  --ink: #f4f5f2; /* page background (porcelain) */
+  --ink-2: #ffffff; /* wells / inputs */
+  --surface: #ffffff; /* cards */
+  --surface-2: #edefea; /* raised / hover */
+  --line: #e4e7e0;
+  --line-2: #d3d7cd;
   /* accent ramp (kept under --gold-* names so all call sites recolor at once) */
-  --gold: #1fae72;
-  --gold-soft: #4ad394;
-  --gold-deep: #137a4f;
-  --paper: #f2f4f0;
-  --muted: #9aa39c;
-  --muted-2: #69716a;
-  --good: #3ecf8e;
-  --bad: #e5705f;
-  --warn: #e0b45a;
+  --gold: #0f9e68;
+  --gold-soft: #13b377;
+  --gold-deep: #0b7a50;
+  --paper: #15181a; /* primary text (ink) */
+  --muted: #5b6259;
+  --muted-2: #878d83;
+  --good: #0f9e68;
+  --bad: #cf4636;
+  --warn: #a9760f;
 
   /* backward-compat aliases so existing components inherit the palette */
   --fg: var(--paper);
@@ -32,6 +32,7 @@
   --border-2: var(--line-2);
   --accent: var(--gold);
   --accent-2: var(--gold-soft);
+  --shadow: 0 1px 2px rgba(18, 28, 22, 0.05), 0 14px 34px -22px rgba(18, 28, 22, 0.22);
 }
 
 @theme inline {
@@ -60,15 +61,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* faint vignette + grain — texture instead of glossy AI gradients */
+/* faint warm light + paper grain — subtle texture, not flat */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(1100px 620px at 50% -12%, rgba(31, 174, 114, 0.1), transparent 60%),
-    radial-gradient(900px 700px at 100% 112%, rgba(31, 174, 114, 0.05), transparent 55%);
+    radial-gradient(1200px 640px at 50% -16%, rgba(15, 158, 104, 0.08), transparent 62%),
+    radial-gradient(800px 600px at 102% 110%, rgba(15, 158, 104, 0.05), transparent 55%);
 }
 body::after {
   content: "";
@@ -76,8 +77,12 @@ body::after {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.04;
+  opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.topbar {
+  background: rgba(244, 245, 242, 0.78);
 }
 
 .display {
@@ -106,6 +111,7 @@ body::after {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 10px;
+  box-shadow: var(--shadow);
 }
 
 .chip {
@@ -139,19 +145,20 @@ body::after {
   transform: translateY(1px);
 }
 .btn:disabled {
-  opacity: 0.4;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 .btn-primary {
   background: var(--gold);
-  color: #04140c;
+  color: #f6fbf8;
   border-color: var(--gold-deep);
+  box-shadow: 0 8px 20px -12px rgba(15, 158, 104, 0.7);
 }
 .btn-primary:hover:not(:disabled) {
   background: var(--gold-soft);
 }
 .btn-ghost {
-  background: transparent;
+  background: var(--surface);
   border-color: var(--line-2);
   color: var(--paper);
 }
@@ -171,7 +178,7 @@ body::after {
 }
 .input:focus {
   border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(31, 174, 114, 0.18);
+  box-shadow: 0 0 0 3px rgba(15, 158, 104, 0.16);
 }
 
 /* live indicator — emerald pulse */
@@ -180,22 +187,22 @@ body::after {
   height: 7px;
   border-radius: 999px;
   background: var(--gold);
-  box-shadow: 0 0 0 0 rgba(31, 174, 114, 0.6);
+  box-shadow: 0 0 0 0 rgba(15, 158, 104, 0.55);
   animation: pulse 1.8s infinite;
 }
 @keyframes pulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(31, 174, 114, 0.5);
+    box-shadow: 0 0 0 0 rgba(15, 158, 104, 0.45);
   }
   70% {
-    box-shadow: 0 0 0 7px rgba(31, 174, 114, 0);
+    box-shadow: 0 0 0 7px rgba(15, 158, 104, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(31, 174, 114, 0);
+    box-shadow: 0 0 0 0 rgba(15, 158, 104, 0);
   }
 }
 
-/* headline accent — emerald italic, not rainbow gradient */
+/* headline accent — emerald italic */
 .gradient-text {
   color: var(--gold);
   font-style: italic;
@@ -210,5 +217,5 @@ body::after {
   border-radius: 999px;
 }
 ::selection {
-  background: rgba(31, 174, 114, 0.28);
+  background: rgba(15, 158, 104, 0.2);
 }

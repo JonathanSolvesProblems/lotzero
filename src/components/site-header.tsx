@@ -16,7 +16,7 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[rgba(7,8,12,0.72)] backdrop-blur-xl">
+    <header className="topbar sticky top-0 z-40 border-b border-[var(--border)] backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4">
         <Link href="/" className="group flex items-center gap-2.5">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
