@@ -3,11 +3,11 @@ import Link from "next/link";
 const SECTIONS = [
   {
     title: "The problem",
-    body: "Real-time global commerce forced a choice — correctness or scale. A single-region SQL database keeps money exactly right, but it is slow for distant users. Eventually-consistent multi-region NoSQL scales worldwide, but it cannot safely hold money, because two regions can both accept the last unit.",
+    body: "Real-time global commerce forced a choice: correctness or scale. A single-Region SQL database keeps money exactly right, but it is slow for distant users. Eventually-consistent multi-Region NoSQL scales worldwide, but it cannot safely hold money, because two Regions can both accept the last unit.",
   },
   {
     title: "The insight",
-    body: "Amazon Aurora DSQL gives active-active, multi-Region strong consistency. The money ledger becomes an ordinary strongly-consistent app — no exotic conflict resolution — paired with Amazon DynamoDB for the high-volume social firehose.",
+    body: "Amazon Aurora DSQL gives active-active, multi-Region strong consistency. The money ledger becomes an ordinary strongly-consistent app (no exotic conflict resolution), paired with Amazon DynamoDB for the high-volume social firehose.",
   },
   {
     title: "The architecture",
@@ -15,7 +15,7 @@ const SECTIONS = [
   },
   {
     title: "Proven, not claimed",
-    body: "A built-in proof fires hundreds of concurrent claims across five AWS Regions and measures the invariants live — zero oversells and zero double-spends, every run.",
+    body: "A built-in proof fires hundreds of concurrent claims across five AWS Regions and measures the invariants live: zero oversells and zero double-spends, every run.",
   },
 ];
 
