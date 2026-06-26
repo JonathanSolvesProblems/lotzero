@@ -1,6 +1,8 @@
 #!/usr/bin/env node
-// Auto-capture preview screenshots of the running app into ./preview
-// Requires: npm i -D playwright   (then: node scripts/shots.mjs)
+// Auto-capture preview screenshots into ./preview
+// Requires: npm i -D playwright
+//   node scripts/shots.mjs                                  (local)
+//   BASE_URL=https://lotzero-sandy.vercel.app node scripts/shots.mjs   (live)
 import { chromium } from "playwright";
 import { mkdirSync } from "node:fs";
 
@@ -9,7 +11,6 @@ const OUT = "preview";
 mkdirSync(OUT, { recursive: true });
 
 const browser = await chromium.launch();
-
 async function newPage(theme) {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
   await ctx.addInitScript((t) => {
@@ -19,7 +20,6 @@ async function newPage(theme) {
   }, theme);
   return ctx.newPage();
 }
-
 async function go(page, path, waitText) {
   await page.goto(`${BASE}${path}`, { waitUntil: "domcontentloaded" });
   if (waitText) await page.getByText(waitText, { exact: false }).first().waitFor({ timeout: 15000 });
@@ -35,7 +35,6 @@ async function runProof(page) {
   await page.waitForTimeout(800);
 }
 
-// --- light (default) ---
 const p = await newPage("light");
 await go(p, "/", "Live now");
 await shot(p, "01-home", true);
@@ -48,14 +47,17 @@ await runProof(p);
 await shot(p, "04-proof", true);
 await go(p, "/wallet", "wallet");
 await shot(p, "05-wallet");
+await go(p, "/faq", "Questions, answered");
+await shot(p, "06-faq", true);
+await go(p, "/about", "won once");
+await shot(p, "07-about", true);
 
-// --- dark theme ---
 const d = await newPage("dark");
 await go(d, "/", "Live now");
-await shot(d, "06-home-dark", true);
+await shot(d, "08-home-dark", true);
 await go(d, "/proof", "Run the contention proof");
 await runProof(d);
-await shot(d, "07-proof-dark", true);
+await shot(d, "09-proof-dark", true);
 
 await browser.close();
 console.log("done");
