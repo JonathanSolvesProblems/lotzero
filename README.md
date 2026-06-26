@@ -170,6 +170,30 @@ Nothing else in the app changes — same code, same SQL.
 - **Originality** — the genuine insight that Aurora DSQL turns a previously-impossible
   weekend build (globally-consistent contention) into a CRUD app, proven, not asserted.
 
+## Data model
+
+Deliberate, and documented: the relational Aurora DSQL schema (with the invariants its
+transactions enforce) and the DynamoDB single-table design (entities, keys, and the access
+patterns each query serves) are written up in [`docs/DATA-MODEL.md`](docs/DATA-MODEL.md).
+
+## Well-Architected
+
+Mapped to the five pillars of the [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/):
+
+- **Operational excellence** — the *same SQL* runs locally on PGlite and in production on Aurora
+  DSQL; every change is gated by an end-to-end suite (`scripts/e2e.mjs`) and a contention load
+  test (`scripts/loadtest.mjs`); one-command seed/reset for clean demos.
+- **Security** — DSQL auth uses short-lived IAM tokens via the official connector (Vercel OIDC),
+  so there is **no static database password**; least-privilege IAM; no secrets in the (public) repo.
+- **Reliability** — Aurora DSQL is active-active with 99.99% single-Region / 99.999% multi-Region
+  availability; conflicting transactions retry on OCC; settlement is atomic; DynamoDB is fully
+  managed.
+- **Performance efficiency** — right tool per workload: edge-rendered Next.js on Vercel, DynamoDB
+  single-digit-ms single-table reads, and DSQL low-latency local writes with strong consistency.
+- **Cost optimization** — both databases are serverless and scale to zero. Measured DSQL spend for
+  the whole build was about **$0.01 over 30 days**; DynamoDB is on-demand; there are no idle
+  instances to pay for.
+
 ## Impact
 
 Live commerce is large and growing fast, and the two failure modes LotZero removes —
