@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local-only submission draft (not committed)
+SUBMISSION.local.md
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
