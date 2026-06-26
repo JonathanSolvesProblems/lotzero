@@ -4,7 +4,7 @@
 
 A real-time, worldwide auction marketplace where the money lives on **Amazon Aurora DSQL**
 (active-active, strongly consistent) and the social firehose lives on **Amazon DynamoDB**,
-fronted by a **Next.js** app built with **v0** and deployed on **Vercel**.
+fronted by a **Next.js** app deployed on **Vercel**.
 
 Built for the **H0: Hack the Zero** hackathon · Track 3 (Million-scale global app).
 
@@ -47,7 +47,7 @@ and we pair it with DynamoDB for the part that just needs to be fast and huge.
 ```mermaid
 flowchart TB
   subgraph B["Browsers worldwide"]
-    UI["Next.js UI · built with v0 · Vercel Edge"]
+    UI["Next.js UI · Vercel Edge (global)"]
   end
 
   UI -->|"bid · claim · settle · wallet"| API["Next.js Route Handlers"]

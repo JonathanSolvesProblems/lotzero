@@ -19,7 +19,7 @@ active-active, multi-Region strong consistency and optimistic concurrency contro
 contention resolves correctly without conflict-resolution or lost writes. The **social
 firehose** — chat, presence, reactions, leaderboards, and a global activity feed — runs on
 **Amazon DynamoDB** with a single-table design built for millions of append-mostly events.
-The front-end is a Next.js app built with v0 and deployed on Vercel.
+The front-end is a Next.js app deployed on Vercel.
 
 The insight: globally-consistent contention used to be impossible to build correctly on a
 weekend stack. Aurora DSQL turns it into a CRUD app. We prove it: a built-in contention
@@ -73,8 +73,8 @@ architecture-diagram beat instead.)*
 two-store design. On DSQL: no foreign keys, no sequences, OCC with automatic retry, IAM-token
 auth via Vercel OIDC. Same code runs locally on embedded Postgres and in production on DSQL."
 
-**2:35–2:50 — Close.** Show the live Vercel URL. "Built with v0, deployed on Vercel, on Aurora
-DSQL and DynamoDB. Shippable today. Zero oversells, zero double-spends. That's LotZero."
+**2:35–2:50 — Close.** Show the live Vercel URL. "Next.js on Vercel, on Aurora DSQL and
+DynamoDB. Shippable today. Zero oversells, zero double-spends. That's LotZero."
 
 > Negative-control option (if you have 5s to spare): on a sold-out lot, click claim again on
 > camera and show the clean rejection. Proves the system stays correct, not just functional.

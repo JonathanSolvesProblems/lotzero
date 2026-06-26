@@ -38,7 +38,7 @@ export default function Home() {
             {[
               ["01", "Money & scarcity", "Amazon Aurora DSQL", "active-active · strongly consistent"],
               ["02", "Social firehose", "Amazon DynamoDB", "chat · presence · leaderboard"],
-              ["03", "Front-end", "v0 + Vercel", "edge-rendered worldwide"],
+              ["03", "Front-end", "Next.js + Vercel", "edge-rendered worldwide"],
             ].map(([n, k, v, sub]) => (
               <div key={n} className="flex items-baseline gap-4 p-4">
                 <span className="mono text-xs text-[var(--gold)]">{n}</span>
