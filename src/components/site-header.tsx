@@ -10,6 +10,8 @@ const NAV = [
   { href: "/", label: "Live" },
   { href: "/proof", label: "Proof" },
   { href: "/wallet", label: "Wallet" },
+  { href: "/faq", label: "FAQ" },
+  { href: "/about", label: "About" },
 ];
 
 export function SiteHeader() {
