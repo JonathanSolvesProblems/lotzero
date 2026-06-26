@@ -54,8 +54,10 @@ export default function WalletPage() {
 
   if (!user) return <div className="card p-8">Pick an identity from the top-right to view a wallet.</div>;
 
-  const w = data?.wallet;
-  const available = w ? w.balance_cents - w.held_cents : 0;
+  // Seed from the identity (already loaded in the header) so the amounts show
+  // instantly, then refine when the detailed wallet/ledger response arrives.
+  const w = data?.wallet ?? { balance_cents: user.balance_cents, held_cents: user.held_cents };
+  const available = w.balance_cents - w.held_cents;
 
   return (
     <div className="space-y-6">
@@ -70,8 +72,8 @@ export default function WalletPage() {
 
       <div className="grid gap-4 sm:grid-cols-3">
         <Balance label="Available" value={formatUSD(available)} accent="var(--good)" big />
-        <Balance label="Held in active bids" value={formatUSD(w?.held_cents ?? 0)} accent="var(--warn)" />
-        <Balance label="Total balance" value={formatUSD(w?.balance_cents ?? 0)} accent="var(--fg)" />
+        <Balance label="Held in active bids" value={formatUSD(w.held_cents)} accent="var(--warn)" />
+        <Balance label="Total balance" value={formatUSD(w.balance_cents)} accent="var(--fg)" />
       </div>
 
       <div className="card p-4">
