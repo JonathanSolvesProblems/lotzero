@@ -19,7 +19,8 @@ active-active, multi-Region strong consistency and optimistic concurrency contro
 contention resolves correctly without conflict-resolution or lost writes. The **social
 firehose** — chat, presence, reactions, leaderboards, and a global activity feed — runs on
 **Amazon DynamoDB** with a single-table design built for millions of append-mostly events.
-The front-end is a Next.js app deployed on Vercel.
+The front-end is a Next.js app deployed on Vercel; the home page's "How it works"
+section was built in v0.
 
 The insight: globally-consistent contention used to be impossible to build correctly on a
 weekend stack. Aurora DSQL turns it into a CRUD app. We prove it: a built-in contention

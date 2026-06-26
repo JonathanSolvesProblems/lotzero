@@ -4,7 +4,8 @@
 
 A real-time, worldwide auction marketplace where the money lives on **Amazon Aurora DSQL**
 (active-active, strongly consistent) and the social firehose lives on **Amazon DynamoDB**,
-fronted by a **Next.js** app deployed on **Vercel**.
+fronted by a **Next.js** app deployed on **Vercel** (the home page's "How it works"
+section was built in **v0**).
 
 Built for the **H0: Hack the Zero** hackathon · Track 3 (Million-scale global app).
 

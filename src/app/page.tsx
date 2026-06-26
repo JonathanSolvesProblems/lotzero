@@ -71,7 +71,7 @@ export default function Home() {
             {
               n: "02",
               title: "Strongly-consistent transaction",
-              body: "Amazon Aurora DSQL settles writes with optimistic concurrency. Exactly one writer wins the contended row — with no cross-Region locks.",
+              body: "Amazon Aurora DSQL settles writes with optimistic concurrency. Exactly one writer wins the contended row, with no cross-Region locks.",
             },
             {
               n: "03",
