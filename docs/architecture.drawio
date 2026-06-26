@@ -1,0 +1,51 @@
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="lotzero-arch" name="LotZero architecture">
+    <mxGraphModel dx="900" dy="640" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="650" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="LotZero — full-stack architecture (zero oversells, zero double-spends)" style="text;html=1;align=left;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="20" width="620" height="24" as="geometry" />
+        </mxCell>
+
+        <mxCell id="browsers" value="Browsers worldwide&#10;US · EU · JP · BR — racing for the same lot" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="300" y="64" width="250" height="56" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ui" value="Next.js front-end&#10;Vercel Edge Network (global)&#10;IAM-token auth via Vercel OIDC" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6F2FF;strokeColor=#3B6DF2;" vertex="1" parent="1">
+          <mxGeometry x="290" y="160" width="270" height="64" as="geometry" />
+        </mxCell>
+
+        <mxCell id="api" value="Next.js Route Handlers (API)&#10;bid · claim · settle · wallet · chat · presence" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6F2FF;strokeColor=#3B6DF2;" vertex="1" parent="1">
+          <mxGeometry x="300" y="264" width="250" height="56" as="geometry" />
+        </mxCell>
+
+        <mxCell id="awsgroup" value="AWS · Region us-east-2 (Ohio)" style="rounded=0;dashed=1;html=1;verticalAlign=top;align=right;spacingRight=8;spacingTop=4;fontSize=11;fontColor=#7A7A7A;strokeColor=#999999;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="90" y="372" width="670" height="234" as="geometry" />
+        </mxCell>
+
+        <mxCell id="dsql" value="Amazon Aurora DSQL&#10;money + scarcity plane&#10;wallets · bids · holds · settlement · ledger&#10;active-active · multi-Region · strongly consistent&#10;OCC transactions, retry on conflict (40001)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE7FF;strokeColor=#7C5CFF;" vertex="1" parent="1">
+          <mxGeometry x="120" y="412" width="290" height="156" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ddb" value="Amazon DynamoDB&#10;social firehose&#10;chat · presence · reactions · leaderboard · feed&#10;single-table design · very high write volume&#10;eventually consistent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D9F2EF;strokeColor=#1196AD;" vertex="1" parent="1">
+          <mxGeometry x="440" y="412" width="290" height="156" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="browsers" target="ui">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="ui" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="strongly-consistent transactions" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="api" target="dsql">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="append-mostly events" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="api" target="ddb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
