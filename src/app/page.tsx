@@ -56,6 +56,51 @@ export default function Home() {
       <section id="live" className="scroll-mt-24">
         <LiveBoard />
       </section>
+
+      <section id="how-it-works" className="scroll-mt-24">
+        <span className="eyebrow">How it works</span>
+        <h2 className="display mt-3 text-3xl leading-tight sm:text-4xl">Correct by construction</h2>
+
+        <div className="mt-8 grid gap-5 md:grid-cols-3">
+          {[
+            {
+              n: "01",
+              title: "Place a bid or claim",
+              body: "Bidders worldwide compete for the same lot in real time. Every action is a single intent submitted against the live board.",
+            },
+            {
+              n: "02",
+              title: "Strongly-consistent transaction",
+              body: "Amazon Aurora DSQL settles writes with optimistic concurrency. Exactly one writer wins the contended row — with no cross-Region locks.",
+            },
+            {
+              n: "03",
+              title: "Settle & pay",
+              body: "The winning transaction commits atomically, so the platform never oversells a lot and never double-spends a balance.",
+            },
+          ].map((step) => (
+            <div key={step.n} className="card p-6">
+              <span className="mono text-sm text-[var(--gold)]">{step.n}</span>
+              <h3 className="display mt-3 text-xl leading-snug">{step.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">{step.body}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="card mt-6 grid grid-cols-2 divide-x divide-y divide-[var(--line)] overflow-hidden md:grid-cols-4 md:divide-y-0">
+          {[
+            ["0", "oversells"],
+            ["0", "double-spends"],
+            ["5", "AWS Regions raced"],
+            ["<2s", "to prove under load"],
+          ].map(([metric, label]) => (
+            <div key={label} className="p-6 text-center">
+              <div className="mono text-3xl text-[var(--gold)]">{metric}</div>
+              <div className="eyebrow mt-2">{label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
