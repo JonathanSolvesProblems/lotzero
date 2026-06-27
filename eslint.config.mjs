@@ -20,6 +20,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // generated/throwaway demo-video assets and scripts (gitignored)
+    "demo-output/**",
   ]),
 ]);
 
