@@ -39,6 +39,15 @@ yarn-error.log*
 # local-only submission draft (not committed)
 SUBMISSION.local.md
 
+# demo video assets (do not commit) — audio, b-roll, rendered output
+/broll/
+*.mp4
+*.mov
+*.mkv
+*.wav
+*.m4a
+/demo-output/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
