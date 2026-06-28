@@ -53,7 +53,7 @@ export const DEMO_LOTS: SeedLot[] = [
   },
   {
     id: "lot_neotokyo",
-    title: "Original Concept Art — Neo Tokyo",
+    title: "Original Concept Art, Neo Tokyo",
     description: "Hand-inked production cel, signed. Single global edition.",
     category: "Art",
     auction_type: "english",
@@ -63,7 +63,7 @@ export const DEMO_LOTS: SeedLot[] = [
   },
   {
     id: "lot_genesis",
-    title: "Genesis Sneaker — Last Mint",
+    title: "Genesis Sneaker, Last Mint",
     description: "Falling-price drop. First claim anywhere on Earth wins the only pair.",
     category: "Streetwear",
     auction_type: "dutch",
@@ -76,7 +76,7 @@ export const DEMO_LOTS: SeedLot[] = [
   },
   {
     id: "lot_vip",
-    title: "VIP Backstage Pass — World Tour",
+    title: "VIP Backstage Pass, World Tour",
     description: "Five passes, one global pool. Dutch price ticks down until they're gone.",
     category: "Experiences",
     auction_type: "dutch",
@@ -90,7 +90,7 @@ export const DEMO_LOTS: SeedLot[] = [
   {
     id: "lot_keeb",
     title: "Founders Edition Mechanical Keyboard",
-    description: "Fixed-price global drop. 50 units, hard cap, no overselling — ever.",
+    description: "Fixed-price global drop. 50 units, hard cap, no overselling, ever.",
     category: "Tech",
     auction_type: "drop",
     start_cents: 180_00,

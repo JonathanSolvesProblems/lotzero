@@ -7,7 +7,7 @@ export default function Home() {
       <section className="relative">
         <div className="flex items-center gap-3 text-[var(--gold)]">
           <span className="live-dot" />
-          <span className="eyebrow !text-[var(--gold)]">Est. 2026 — Global live auctions, settled with certainty</span>
+          <span className="eyebrow !text-[var(--gold)]">Est. 2026, Global live auctions, settled with certainty</span>
         </div>
 
         <div className="mt-6 grid gap-10 lg:grid-cols-[1.35fr_1fr] lg:items-end">

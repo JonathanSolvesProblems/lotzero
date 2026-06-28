@@ -16,8 +16,8 @@ move each plane onto production AWS and deploy the frontend on Vercel.
    ```
 5. Set env: `DSQL_CLUSTER_ENDPOINT`, `DSQL_REGION`, `DSQL_USER=admin`, `DSQL_DATABASE=postgres`.
 
-Auth uses short-lived IAM tokens minted by `@aws/aurora-dsql-node-postgres-connector`
-— no database password is ever stored.
+Auth uses short-lived IAM tokens minted by `@aws/aurora-dsql-node-postgres-connector`.
+No database password is ever stored.
 
 ### Optional: light up the live cross-Region demo (recommended for the video)
 
@@ -41,7 +41,7 @@ Set env: `DYNAMODB_TABLE=lotzero_firehose`.
 1. Push this folder to a Git repo and import it in Vercel (framework auto-detected).
 2. Add the **AWS** integration from the Vercel Marketplace and connect Aurora DSQL,
    or add an OIDC-federated AWS role so functions get credentials with no static keys.
-3. Add the env vars from steps 1–2 (Project → Settings → Environment Variables).
+3. Add the env vars from steps 1-2 (Project → Settings → Environment Variables).
 4. Deploy. Reseed demo data once with `BASE_URL=https://<app>.vercel.app node scripts/seed.mjs`.
 
 ## 4. Verify correctness in production

@@ -11,7 +11,7 @@ Built for the **H0: Hack the Zero** hackathon · Track 3 (Million-scale global a
 
 > **Uniqueness claim:** A global live marketplace where the authoritative bid ledger and
 > money movement run on Aurora DSQL's active-active strong consistency, while the
-> million-scale social firehose runs on DynamoDB — with a measured **zero oversells and
+> million-scale social firehose runs on DynamoDB, with a measured **zero oversells and
 > zero double-spends under concurrent multi-Region load**. No generic store on the stack
 > can make that guarantee.
 
@@ -21,16 +21,16 @@ Built for the **H0: Hack the Zero** hackathon · Track 3 (Million-scale global a
 
 Real-time global commerce used to force a choice:
 
-- **Correctness** — a single-Region SQL box. Strongly consistent, but every distant bidder
+- **Correctness**, a single-Region SQL box. Strongly consistent, but every distant bidder
   pays a latency tax and it's a single point of failure.
-- **Scale** — an eventually-consistent multi-Region NoSQL store. Fast everywhere, but it
+- **Scale**, an eventually-consistent multi-Region NoSQL store. Fast everywhere, but it
   *cannot safely hold money*: two Regions can both accept "the last unit," and conflict
   resolution silently loses writes.
 
 **Aurora DSQL collapses that tradeoff.** It gives active-active, multi-Region **strong
-consistency** with low-latency local writes. So the part that must be exactly right — the
-bid ledger, wallet holds, settlement — becomes an ordinary strongly-consistent CRUD app,
-and we pair it with DynamoDB for the part that just needs to be fast and huge.
+consistency** with low-latency local writes. So the part that must be exactly right, the
+bid ledger, wallet holds, settlement, becomes an ordinary strongly-consistent CRUD app,
+and I pair it with DynamoDB for the part that just needs to be fast and huge.
 
 **That consistency boundary is the architecture.**
 
@@ -59,7 +59,7 @@ flowchart TB
 ```
 
 Auth to DSQL uses short-lived IAM tokens minted by
-`@aws/aurora-dsql-node-postgres-connector` (works with Vercel OIDC — no static DB password).
+`@aws/aurora-dsql-node-postgres-connector` (works with Vercel OIDC, no static DB password).
 
 ---
 
@@ -75,10 +75,10 @@ OCC error and are automatically retried, re-checking fresh state.
    when the same user acts from two Regions in the same millisecond.
 
 DSQL-aware data modeling (see [`src/lib/db/schema.ts`](src/lib/db/schema.ts)):
-- **No foreign keys** (DSQL doesn't support them) — integrity is enforced in the transactions.
-- **No sequences / `SERIAL`** — IDs are application-generated.
-- **No JSON/JSONB columns** — DSQL doesn't support JSON types.
-- **One DDL statement per transaction** — the client applies each `CREATE TABLE` separately.
+- **No foreign keys** (DSQL doesn't support them), integrity is enforced in the transactions.
+- **No sequences / `SERIAL`**, IDs are application-generated.
+- **No JSON/JSONB columns**, DSQL doesn't support JSON types.
+- **One DDL statement per transaction**, the client applies each `CREATE TABLE` separately.
 - **`SELECT … FOR UPDATE`** is used as DSQL intends it: not a lock, but a way to enroll the
   read rows into the OCC conflict-check set, so a racing writer loses cleanly at commit.
 - **Async indexes** are applied out-of-band ([`infra/dsql-indexes.sql`](infra/dsql-indexes.sql)).
@@ -89,8 +89,8 @@ The core logic lives in [`src/lib/domain/bids.ts`](src/lib/domain/bids.ts).
 
 ## The proof (measured correctness, not just "it works")
 
-The `/proof` page and the `loadtest` script fire a deliberate global race — many buyers
-across five AWS Regions colliding on a scarce lot at the same instant — and verify the
+The `/proof` page and the `loadtest` script fire a deliberate global race, many buyers
+across five AWS Regions colliding on a scarce lot at the same instant, and verify the
 invariant holds exactly. Sample run (local, PGlite):
 
 ```
@@ -102,9 +102,9 @@ double_spend   50    1        0         0         258    pglite  ✅ held
 double_spend   150   1        0         0         690    pglite  ✅ held
 ```
 
-- **oversell** — N buyers worldwide rush a drop with only K units. Exactly K win; the rest
+- **oversell**, N buyers worldwide rush a drop with only K units. Exactly K win; the rest
   are cleanly rejected; the seller is credited exactly K × price.
-- **double_spend** — one buyer funded for a single purchase tries to win N lots at once from
+- **double_spend**, one buyer funded for a single purchase tries to win N lots at once from
   many Regions. Exactly one wins; their balance never goes negative.
 
 Run it yourself against a live server:
@@ -118,7 +118,7 @@ It exits non-zero if any invariant is ever violated, so it doubles as a CI gate.
 
 > On local PGlite the transactions serialize, so the race is simulated and the invariant is
 > enforced by the same SQL. On **Aurora DSQL** the attempts run with true multi-Region
-> concurrency and the losing transactions hit a real OCC conflict and retry — identical
+> concurrency and the losing transactions hit a real OCC conflict and retry, identical
 > guarantee, real contention.
 
 ---
@@ -142,32 +142,32 @@ Open the same lot in two tabs as two users in two Regions to feel the contention
 
 Set `DSQL_CLUSTER_ENDPOINT` to move the ledger onto Aurora DSQL, and `DYNAMODB_TABLE` to
 move the firehose onto DynamoDB. Full steps in [`infra/PROVISION.md`](infra/PROVISION.md).
-Nothing else in the app changes — same code, same SQL.
+Nothing else in the app changes, same code, same SQL.
 
 ---
 
 ## Auction mechanics
 
-- **English (ascending)** — classic high-bid auction. Funds are *held* on the high bidder
+- **English (ascending)**, classic high-bid auction. Funds are *held* on the high bidder
   and released the instant they're outbid; settlement converts the hold into payment.
-- **Dutch (falling price)** — the price ticks down on a schedule; the first claim anywhere on
+- **Dutch (falling price)**, the price ticks down on a schedule; the first claim anywhere on
   Earth wins. The hardest possible contention test, and the most dramatic demo.
-- **Fixed drop** — a hard-capped, fixed-price global drop (e.g. 50 units). Proves no
+- **Fixed drop**, a hard-capped, fixed-price global drop (e.g. 50 units). Proves no
   overselling at multi-unit scale.
 
 ---
 
 ## How this maps to the judging criteria
 
-- **Technological Implementation** — a deliberate two-store architecture with an explicit
+- **Technological Implementation**, a deliberate two-store architecture with an explicit
   consistency boundary; DSQL-correct data modeling (FK-free, sequence-free, OCC retry,
   async indexes); the official IAM connector; measured correctness under load.
-- **Design** — the front-end is built around the back-end: live price/countdown, held-funds
+- **Design**, the front-end is built around the back-end: live price/countdown, held-funds
   surfaced in the wallet, Region-aware actions, and a proof console that makes the database
   guarantee *visible*.
-- **Impact & Real-world Applicability** — live commerce is a real, growing market; this is a
+- **Impact & Real-world Applicability**, live commerce is a real, growing market; this is a
   genuinely shippable marketplace whose correctness is the product.
-- **Originality** — the genuine insight that Aurora DSQL turns a previously-impossible
+- **Originality**, the genuine insight that Aurora DSQL turns a previously-impossible
   weekend build (globally-consistent contention) into a CRUD app, proven, not asserted.
 
 ## Data model
@@ -180,31 +180,31 @@ patterns each query serves) are written up in [`docs/DATA-MODEL.md`](docs/DATA-M
 
 Mapped to the five pillars of the [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/):
 
-- **Operational excellence** — the *same SQL* runs locally on PGlite and in production on Aurora
+- **Operational excellence**, the *same SQL* runs locally on PGlite and in production on Aurora
   DSQL; every change is gated by an end-to-end suite (`scripts/e2e.mjs`) and a contention load
   test (`scripts/loadtest.mjs`); one-command seed/reset for clean demos.
-- **Security** — DSQL auth uses short-lived IAM tokens via the official connector (Vercel OIDC),
+- **Security**, DSQL auth uses short-lived IAM tokens via the official connector (Vercel OIDC),
   so there is **no static database password**; least-privilege IAM; no secrets in the (public) repo.
-- **Reliability** — Aurora DSQL is active-active with 99.99% single-Region / 99.999% multi-Region
+- **Reliability**, Aurora DSQL is active-active with 99.99% single-Region / 99.999% multi-Region
   availability; conflicting transactions retry on OCC; settlement is atomic; DynamoDB is fully
   managed.
-- **Performance efficiency** — right tool per workload: edge-rendered Next.js on Vercel, DynamoDB
+- **Performance efficiency**, right tool per workload: edge-rendered Next.js on Vercel, DynamoDB
   single-digit-ms single-table reads, and DSQL low-latency local writes with strong consistency.
-- **Cost optimization** — both databases are serverless and scale to zero. Measured DSQL spend for
+- **Cost optimization**, both databases are serverless and scale to zero. Measured DSQL spend for
   the whole build was about **$0.01 over 30 days**; DynamoDB is on-demand; there are no idle
   instances to pay for.
 
 ## Impact
 
-Live commerce is large and growing fast, and the two failure modes LotZero removes —
-**overselling** and **global latency** — are both quantifiably expensive.
+Live commerce is large and growing fast, and the two failure modes LotZero removes,
+**overselling** and **global latency**, are both quantifiably expensive.
 
 - **Big, fast-growing market.** US livestream shopping reached roughly **$50B** in GMV in 2025
   and is projected to exceed **5% of US digital commerce** in 2026. The global live-commerce
   market was about **$172B in 2025**, growing at a **~41% CAGR**.
 - **Overselling is a real, costly failure.** Cart/checkout abandonment averages **~70%**, which
   Baymard estimates at **~$260B/yr of recoverable revenue in the US** alone. Overselling a
-  limited drop turns a completed sale into a cancellation, refund, and a lost customer — the
+  limited drop turns a completed sale into a cancellation, refund, and a lost customer, the
   exact failure LotZero makes *structurally impossible*.
 - **Global latency directly costs conversion.** Amazon found every **100ms** of added latency
   cost **~1% of sales**; Akamai measured roughly a **7% conversion drop per 100ms**; and
@@ -215,10 +215,10 @@ Live commerce is large and growing fast, and the two failure modes LotZero remov
 LotZero is the rare design that fixes both at once: correctness (no oversell/double-spend) and
 low-latency local writes everywhere, on one operationally proven stack.
 
-Sources: live commerce — [Statista](https://www.statista.com/topics/8752/livestream-commerce/),
+Sources: live commerce, [Statista](https://www.statista.com/topics/8752/livestream-commerce/),
 [Grand View Research](https://www.grandviewresearch.com/industry-analysis/live-commerce-market-report);
-abandonment — [Baymard Institute](https://baymard.com/lists/cart-abandonment-rate);
-latency — [Amazon/Conductor](https://www.conductor.com/academy/page-speed-resources/faq/amazon-page-speed-study/),
+abandonment, [Baymard Institute](https://baymard.com/lists/cart-abandonment-rate);
+latency, [Amazon/Conductor](https://www.conductor.com/academy/page-speed-resources/faq/amazon-page-speed-study/),
 Akamai, [Google × Deloitte, *Milliseconds Make Millions*](https://www.deloitte.com/uk/en/Industries/consumer/research/milliseconds-make-millions.html).
 *Re-confirm each figure against the primary source before final submission.*
 
@@ -226,7 +226,7 @@ Akamai, [Google × Deloitte, *Milliseconds Make Millions*](https://www.deloitte.
 
 - Payments are **sandboxed** (demo wallets), not a real PSP; production needs Stripe/Adyen,
   KYC, and tax.
-- No auth provider yet — identity is a demo switcher; production needs real accounts/authz.
+- No auth provider yet, identity is a demo switcher; production needs real accounts/authz.
 - Anti-fraud, bid-sniping protection, and dispute handling are out of scope.
 - Aurora DSQL has documented SQL/feature limits; the schema respects the big ones (no FK, no
   sequences), but a production schema review against the current DSQL feature set is required.
@@ -240,9 +240,9 @@ Vercel.
 
 ## Project map
 
-- [`src/lib/db/`](src/lib/db/) — DSQL/PGlite client, schema, seed
-- [`src/lib/domain/`](src/lib/domain/) — bids, wallet, settlement, pricing, the proof
-- [`src/lib/dynamo/`](src/lib/dynamo/) — the single-table firehose
-- [`src/app/api/`](src/app/api/) — route handlers
-- [`src/app/proof/`](src/app/proof/) — the contention-proof console
-- [`infra/`](infra/) — provisioning, DSQL indexes, DynamoDB table
+- [`src/lib/db/`](src/lib/db/), DSQL/PGlite client, schema, seed
+- [`src/lib/domain/`](src/lib/domain/), bids, wallet, settlement, pricing, the proof
+- [`src/lib/dynamo/`](src/lib/dynamo/), the single-table firehose
+- [`src/app/api/`](src/app/api/), route handlers
+- [`src/app/proof/`](src/app/proof/), the contention-proof console
+- [`infra/`](infra/), provisioning, DSQL indexes, DynamoDB table

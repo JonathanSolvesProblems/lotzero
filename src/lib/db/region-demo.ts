@@ -9,7 +9,7 @@ import { newId } from "../ids";
  *
  * Enable by setting DSQL_CLUSTER_ENDPOINT_2 (+ DSQL_REGION_2) to the second peered
  * endpoint. Until then the endpoint reports `configured: false` and the UI explains
- * how to turn it on — nothing here runs against the single-Region demo.
+ * how to turn it on, nothing here runs against the single-Region demo.
  */
 
 const regionA = () => process.env.DSQL_REGION || process.env.AWS_REGION || "us-east-1";

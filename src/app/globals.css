@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
-  LotZero design system — light "gallery catalog" aesthetic.
+  LotZero design system, light "gallery catalog" aesthetic.
   Palette: porcelain paper · deep ink · emerald accent. Premium, editorial, calm.
   Editorial serif (Fraunces) for display, grotesque for UI, mono for numerals.
   Hairline rules + lot-number motif + soft card shadows + faint paper grain.
@@ -61,7 +61,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* faint warm light + paper grain — subtle texture, not flat */
+/* faint warm light + paper grain, subtle texture, not flat */
 body::before {
   content: "";
   position: fixed;
@@ -181,7 +181,7 @@ body::after {
   box-shadow: 0 0 0 3px rgba(15, 158, 104, 0.16);
 }
 
-/* live indicator — emerald pulse */
+/* live indicator, emerald pulse */
 .live-dot {
   width: 7px;
   height: 7px;
@@ -202,7 +202,7 @@ body::after {
   }
 }
 
-/* headline accent — emerald italic */
+/* headline accent, emerald italic */
 .gradient-text {
   color: var(--gold);
   font-style: italic;

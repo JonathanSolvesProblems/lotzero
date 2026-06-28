@@ -50,7 +50,7 @@ export function RegionDemo() {
       <p className="text-sm text-[var(--muted)]">
         Write through one Region&apos;s endpoint of a peered Aurora DSQL cluster, then read it
         straight back through the other Region&apos;s endpoint. With strong consistency the value
-        is already there — no replication lag to wait out.
+        is already there, no replication lag to wait out.
       </p>
 
       {!status.configured ? (
@@ -61,7 +61,7 @@ export function RegionDemo() {
             cluster and set <code className="mono">DSQL_CLUSTER_ENDPOINT</code> +{" "}
             <code className="mono">DSQL_CLUSTER_ENDPOINT_2</code> (with{" "}
             <code className="mono">DSQL_REGION</code> / <code className="mono">DSQL_REGION_2</code>)
-            to enable this live demo. The code is already wired — it turns on the moment those env
+            to enable this live demo. The code is already wired, it turns on the moment those env
             vars exist.
           </p>
         </div>

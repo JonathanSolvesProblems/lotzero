@@ -9,7 +9,7 @@ export function Countdown({ endsAt, className = "" }: { endsAt: string | null; c
     return () => clearInterval(t);
   }, []);
 
-  if (!endsAt) return <span className={className}>—</span>;
+  if (!endsAt) return <span className={className}>open</span>;
   const ms = Date.parse(endsAt) - now;
   if (ms <= 0) return <span className={`${className} text-[var(--bad)]`}>ended</span>;
 

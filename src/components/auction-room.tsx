@@ -97,8 +97,8 @@ export function AuctionRoom({ lotId }: { lotId: string }) {
     } else {
       const d = r.data as { message?: string; error?: string; detail?: number };
       let msg = d.message || d.error || "Rejected";
-      if (d.error === "too_low" && d.detail) msg = `Outbid — minimum is now ${formatUSD(d.detail)}`;
-      if (d.error === "insufficient" && typeof d.detail === "number") msg = `Insufficient — ${formatUSD(d.detail)} available`;
+      if (d.error === "too_low" && d.detail) msg = `Outbid, minimum is now ${formatUSD(d.detail)}`;
+      if (d.error === "insufficient" && typeof d.detail === "number") msg = `Insufficient, ${formatUSD(d.detail)} available`;
       showFlash("err", msg);
     }
     await Promise.all([refresh(), reload()]);
@@ -165,7 +165,7 @@ export function AuctionRoom({ lotId }: { lotId: string }) {
                     onBid={(amountCents) =>
                       act(
                         () => postJSON(`/api/auctions/${lotId}/bid`, { userId: user?.id, region, amountCents }),
-                        "Bid placed — you're the high bidder 🏆",
+                        "Bid placed, you're the high bidder 🏆",
                       )
                     }
                   />
@@ -175,7 +175,7 @@ export function AuctionRoom({ lotId }: { lotId: string }) {
                 <div className="rounded-xl border border-[var(--good)]/30 bg-[var(--good)]/5 p-4">
                   <div className="text-sm text-[var(--muted)]">Settled · strongly consistent final state</div>
                   <div className="mono text-lg font-bold">
-                    Cleared at {formatUSD(lot.clearing_cents)} — exactly {lot.qty_claimed}/{lot.qty_total} units sold
+                    Cleared at {formatUSD(lot.clearing_cents)}, exactly {lot.qty_claimed}/{lot.qty_total} units sold
                   </div>
                 </div>
               )}
@@ -218,7 +218,7 @@ function PricePanel({ snap, settled, isClaim, remaining }: { snap: Snapshot; set
       {isClaim ? (
         <Stat label="Units left" value={`${remaining}/${lot.qty_total}`} />
       ) : (
-        <Stat label="Min next bid" value={settled ? "—" : formatUSD(snap.min_next_cents)} />
+        <Stat label="Min next bid" value={settled ? "n/a" : formatUSD(snap.min_next_cents)} />
       )}
       <Stat label={settled ? "Closed" : "Ends in"} value={<Countdown endsAt={settled ? null : lot.ends_at} />} />
     </div>
@@ -281,7 +281,7 @@ function ClaimPanel({ snap, region, onClaim }: { snap: Snapshot; region: string;
     <div className="space-y-3 rounded-xl border border-[var(--border-2)] bg-[var(--surface-2)] p-4">
       <div className="flex items-center justify-between text-sm">
         <span className="text-[var(--muted)]">
-          {snap.lot.auction_type === "dutch" ? "Price is falling — claim before it's gone" : "Fixed-price global drop"}
+          {snap.lot.auction_type === "dutch" ? "Price is falling, claim before it's gone" : "Fixed-price global drop"}
         </span>
         <span className="chip">claiming from 🌐 {region}</span>
       </div>

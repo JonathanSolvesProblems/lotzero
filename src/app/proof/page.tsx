@@ -59,7 +59,7 @@ export default function ProofPage() {
         <h1 className="display text-4xl leading-tight">Fire a global race. Watch the invariant hold.</h1>
         <p className="text-[var(--muted)]">
           This spins up many buyers across five AWS Regions and makes them collide on a scarce lot at the exact same
-          moment — the situation an eventually-consistent store gets wrong. Aurora DSQL&apos;s strongly-consistent,
+          moment, the situation an eventually-consistent store gets wrong. Aurora DSQL&apos;s strongly-consistent,
           optimistic-concurrency transactions let <span className="text-[var(--fg)]">exactly</span> the right number of
           winners through. Everything is created and torn down per run.
         </p>
@@ -163,7 +163,7 @@ function Report({ report }: { report: ProofReport }) {
         <p className="text-xs text-[var(--muted)]">
           Note: locally, PGlite serializes the transactions, so the race is simulated and the invariant is enforced by
           the same SQL. On Aurora DSQL the attempts run with true multi-Region concurrency and the losing transactions
-          fail with an OCC error and retry — identical guarantee, real contention.
+          fail with an OCC error and retry, identical guarantee, real contention.
         </p>
       )}
 

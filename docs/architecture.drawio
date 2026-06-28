@@ -5,11 +5,11 @@
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
 
-        <mxCell id="title" value="LotZero — full-stack architecture (zero oversells, zero double-spends)" style="text;html=1;align=left;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="title" value="LotZero, full-stack architecture (zero oversells, zero double-spends)" style="text;html=1;align=left;fontSize=15;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="60" y="20" width="620" height="24" as="geometry" />
         </mxCell>
 
-        <mxCell id="browsers" value="Browsers worldwide&#10;US · EU · JP · BR — racing for the same lot" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
+        <mxCell id="browsers" value="Browsers worldwide&#10;US · EU · JP · BR, racing for the same lot" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#999999;" vertex="1" parent="1">
           <mxGeometry x="300" y="64" width="250" height="56" as="geometry" />
         </mxCell>
 

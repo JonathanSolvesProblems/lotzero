@@ -14,7 +14,7 @@ Auto-captured from the live site (`https://lotzero-sandy.vercel.app`) with `node
 | `08-home-dark.png` | Home in dark theme |
 | `09-proof-dark.png` | Contention proof in dark theme |
 
-## Manual screenshots (auth-gated — add these yourself)
+## Manual screenshots (auth-gated, add these yourself)
 
 These pages require a login, so they can't be auto-captured. Save them here with these names:
 

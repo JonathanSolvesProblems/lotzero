@@ -44,9 +44,9 @@ export function LotCard({ lot }: { lot: LotView }) {
         </div>
 
         <div className="space-y-3 p-4">
-          <div className="flex items-center justify-between">
-            <span className="eyebrow">{lot.category}</span>
-            <span className="eyebrow">{TYPE_LABEL[lot.auction_type]}</span>
+          <div className="flex items-center justify-between gap-2 text-[10px] uppercase tracking-[0.12em] text-[var(--muted)]">
+            <span className="truncate">{lot.category}</span>
+            <span className="shrink-0 whitespace-nowrap text-[var(--muted-2)]">{TYPE_LABEL[lot.auction_type]}</span>
           </div>
           <h3 className="display text-lg leading-snug">{lot.title}</h3>
 

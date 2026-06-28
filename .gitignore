@@ -39,7 +39,7 @@ yarn-error.log*
 # local-only submission draft (not committed)
 SUBMISSION.local.md
 
-# demo video assets (do not commit) — audio, b-roll, rendered output
+# demo video assets (do not commit), audio, b-roll, rendered output
 /broll/
 *.mp4
 *.mov

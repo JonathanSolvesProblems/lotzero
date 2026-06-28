@@ -14,7 +14,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "LotZero — global live auctions with zero oversells",
+  title: "LotZero, global live auctions with zero oversells",
   description:
     "A globally-distributed live-auction marketplace. The money ledger runs on Aurora DSQL (active-active strong consistency); the social firehose runs on DynamoDB. Zero oversells, zero double-spends, every Region.",
 };

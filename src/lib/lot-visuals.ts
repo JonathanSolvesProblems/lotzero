@@ -13,6 +13,6 @@ export const lotVisual = (category: string | null) => MAP[category ?? ""] ?? FAL
 
 export const TYPE_LABEL: Record<string, string> = {
   english: "Ascending",
-  dutch: "Dutch · falling price",
+  dutch: "Falling price",
   drop: "Fixed drop",
 };

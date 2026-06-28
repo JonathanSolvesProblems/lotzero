@@ -3,8 +3,8 @@ import { newId } from "../ids";
 
 /**
  * The "firehose" plane: chat, presence, reactions, leaderboards, global activity.
- * This is high-volume, append-mostly, eventually-consistent data — the opposite
- * of the money ledger — so it lives in DynamoDB with a single-table design.
+ * This is high-volume, append-mostly, eventually-consistent data, the opposite
+ * of the money ledger, so it lives in DynamoDB with a single-table design.
  *
  * Backend switch by env (DYNAMODB_TABLE). With no table configured it falls back
  * to an in-process store so the app runs locally with zero AWS setup.

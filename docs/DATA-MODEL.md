@@ -6,7 +6,7 @@ huge** (DynamoDB).
 
 ---
 
-## 1. Amazon Aurora DSQL — the money + scarcity plane (relational)
+## 1. Amazon Aurora DSQL, the money + scarcity plane (relational)
 
 Strongly-consistent, optimistic-concurrency transactions hold everything that must be correct
 under global contention. Modeled for DSQL specifically: **no foreign keys, no sequences, no JSON
@@ -30,7 +30,7 @@ On conflict, the transaction fails with `40001` and `db.tx()` retries the whole 
 
 ---
 
-## 2. Amazon DynamoDB — the social firehose (single-table design)
+## 2. Amazon DynamoDB, the social firehose (single-table design)
 
 One table (`lotzero_firehose`), many entity types, keyed for the app's access patterns. Item
 collections are grouped by lot (`LOT#<id>`) so chat, presence, and reactions for a lot live in a
