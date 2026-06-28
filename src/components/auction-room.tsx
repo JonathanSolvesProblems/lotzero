@@ -89,6 +89,7 @@ export function AuctionRoom({ lotId }: { lotId: string }) {
   const settled = lot.status === "settled";
   const remaining = lot.qty_total - lot.qty_claimed;
   const available = user ? user.balance_cents - user.held_cents : 0;
+  const youWon = !!user && snap.bids.some((b) => b.status === "won" && b.user_handle === user.handle);
 
   const act = async (fn: () => Promise<{ ok: boolean; status: number; data: Record<string, unknown> }>, okMsg: string) => {
     if (!user) return showFlash("err", "Pick an identity first");
@@ -99,6 +100,7 @@ export function AuctionRoom({ lotId }: { lotId: string }) {
       const d = r.data as { message?: string; error?: string; detail?: number };
       let msg = d.message || d.error || "Rejected";
       if (d.error === "too_low" && d.detail) msg = `Outbid, the minimum is now ${formatUSD(d.detail)}`;
+      if (d.error === "sold_out") msg = "Sold out, another bidder claimed it first";
       if (d.error === "insufficient")
         msg =
           typeof d.detail === "number"
@@ -186,8 +188,26 @@ export function AuctionRoom({ lotId }: { lotId: string }) {
                 ))}
 
               {settled && (
-                <div className="rounded-xl border border-[var(--good)]/30 bg-[var(--good)]/5 p-4">
-                  <div className="text-sm text-[var(--muted)]">Settled · strongly consistent final state</div>
+                <div
+                  className={`rounded-xl border p-4 ${
+                    !user
+                      ? "border-[var(--good)]/30 bg-[var(--good)]/5"
+                      : youWon
+                      ? "border-[var(--good)]/40 bg-[var(--good)]/10"
+                      : "border-[var(--bad)]/40 bg-[var(--bad)]/10"
+                  }`}
+                >
+                  <div
+                    className={`text-sm ${
+                      !user ? "text-[var(--muted)]" : youWon ? "text-[var(--good)]" : "text-[var(--bad)]"
+                    }`}
+                  >
+                    {!user
+                      ? "Settled · strongly consistent final state"
+                      : youWon
+                      ? "🎉 You won this lot"
+                      : "Sold out, you didn't win this one"}
+                  </div>
                   <div className="mono text-lg font-bold">
                     Cleared at {formatUSD(lot.clearing_cents)}, exactly {lot.qty_claimed}/{lot.qty_total} units sold
                   </div>
