@@ -36,6 +36,17 @@ export default function ProofPage() {
   const [qty, setQty] = useState(1);
   const [running, setRunning] = useState(false);
   const [report, setReport] = useState<ProofReport | null>(null);
+  const [resetting, setResetting] = useState(false);
+
+  const resetDemo = async () => {
+    setResetting(true);
+    try {
+      await fetch("/api/seed", { method: "POST" });
+      location.reload();
+    } catch {
+      setResetting(false);
+    }
+  };
 
   const run = async () => {
     setRunning(true);
@@ -125,6 +136,18 @@ export default function ProofPage() {
       {report && <Report report={report} />}
 
       <RegionDemo />
+
+      <div className="card flex flex-wrap items-center justify-between gap-3 p-5">
+        <div>
+          <h3 className="text-sm font-semibold">Testing utilities</h3>
+          <p className="text-sm text-[var(--muted)]">
+            Restore the demo lots, wallets, and activity feed to a clean starting state.
+          </p>
+        </div>
+        <button className="btn btn-ghost shrink-0" onClick={resetDemo} disabled={resetting}>
+          {resetting ? "Resetting…" : "Reset demo data"}
+        </button>
+      </div>
     </div>
   );
 }
