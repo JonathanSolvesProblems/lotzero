@@ -13,6 +13,7 @@ Auto-captured from the live site (`https://lotzero-sandy.vercel.app`) with `node
 | `07-about.png` | About page (built in v0) |
 | `08-home-dark.png` | Home in dark theme |
 | `09-proof-dark.png` | Contention proof in dark theme |
+| `14-insufficient-funds.png` | Bid panel with the proactive insufficient-funds guard (amber warning + top-up link, disabled button) |
 
 ## Manual screenshots (auth-gated, add these yourself)
 
