@@ -127,10 +127,18 @@ export function AuctionRoom({ lotId }: { lotId: string }) {
         <div className="space-y-4">
           <div className="card overflow-hidden">
             <div
-              className="flex h-44 items-center justify-center text-7xl"
+              className="relative flex h-56 items-center justify-center overflow-hidden text-7xl"
               style={{ background: `linear-gradient(135deg, ${v.from}, ${v.to})` }}
             >
-              {v.emoji}
+              {v.img ? (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={v.img} alt={lot.title} className="absolute inset-0 h-full w-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+                </>
+              ) : (
+                v.emoji
+              )}
             </div>
             <div className="space-y-4 p-5">
               <div className="flex flex-wrap items-center gap-2">

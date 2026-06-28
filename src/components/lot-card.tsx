@@ -24,21 +24,38 @@ export function LotCard({ lot }: { lot: LotView }) {
     <Link href={`/auctions/${lot.id}`} className="group block h-full">
       <article className="card flex h-full flex-col overflow-hidden transition group-hover:border-[var(--gold-deep)]">
         {/* catalog plate */}
-        <div className="relative flex h-32 items-center justify-center overflow-hidden border-b border-[var(--line)] bg-[var(--ink-2)]">
+        <div className="relative h-32 overflow-hidden border-b border-[var(--line)] bg-[var(--ink-2)]">
+          {v.img ? (
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={v.img}
+                alt={lot.title}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/25" />
+            </>
+          ) : (
+            <div className="flex h-full items-center justify-center">
+              <span className="text-4xl opacity-90 transition group-hover:scale-105">{v.emoji}</span>
+            </div>
+          )}
           <span
-            className="mono absolute left-3 top-1 select-none text-[3.4rem] leading-none text-[var(--line-2)] opacity-50"
+            className="mono absolute left-3 top-1 select-none text-[3.4rem] leading-none text-white/15 mix-blend-overlay"
             aria-hidden
           >
             {lotNo(lot.id)}
           </span>
-          <span className="relative text-4xl opacity-90 transition group-hover:scale-105">{v.emoji}</span>
           <div className="absolute right-3 top-3">
             {!settled ? (
-              <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-[var(--gold)]">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-black/45 px-2 py-0.5 text-[10px] uppercase tracking-widest text-white backdrop-blur-sm">
                 <span className="live-dot" /> live
               </span>
             ) : (
-              <span className="text-[10px] uppercase tracking-widest text-[var(--good)]">settled</span>
+              <span className="rounded-full bg-black/45 px-2 py-0.5 text-[10px] uppercase tracking-widest text-[var(--good)] backdrop-blur-sm">
+                settled
+              </span>
             )}
           </div>
         </div>
