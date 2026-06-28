@@ -54,7 +54,7 @@ flowchart TB
   UI -->|"bid · claim · settle · wallet"| API["Next.js Route Handlers"]
   UI -->|"chat · presence · reactions · feed"| API
 
-  API -->|"strongly-consistent OCC transactions"| DSQL[("Amazon Aurora DSQL<br/>active-active · multi-Region<br/>strong consistency")]
+  API -->|"strongly-consistent OCC transactions"| DSQL[("Amazon Aurora DSQL<br/>active-active · strongly consistent<br/>multi-Region ready")]
   API -->|"append-mostly events"| DDB[("Amazon DynamoDB<br/>single-table firehose")]
 ```
 
@@ -220,7 +220,6 @@ Sources: live commerce, [Statista](https://www.statista.com/topics/8752/livestre
 abandonment, [Baymard Institute](https://baymard.com/lists/cart-abandonment-rate);
 latency, [Amazon/Conductor](https://www.conductor.com/academy/page-speed-resources/faq/amazon-page-speed-study/),
 Akamai, [Google × Deloitte, *Milliseconds Make Millions*](https://www.deloitte.com/uk/en/Industries/consumer/research/milliseconds-make-millions.html).
-*Re-confirm each figure against the primary source before final submission.*
 
 ## Honest limitations / path to production
 

@@ -49,7 +49,7 @@
   <rect x="90" y="486" width="470" height="210" rx="16" fill="#141029" stroke="#7c5cff" stroke-width="1.5"/>
   <rect x="90" y="486" width="470" height="44" rx="16" fill="url(#purple)"/>
   <text x="112" y="514" fill="#ffffff" font-size="19" font-weight="700">Amazon Aurora DSQL</text>
-  <text x="112" y="560" fill="#e7e3ff" font-size="14.5">active-active · multi-Region peered · strong consistency</text>
+  <text x="112" y="560" fill="#e7e3ff" font-size="14.5">active-active · strong consistency · multi-Region ready</text>
   <text x="112" y="586" fill="#cfc7f5" font-size="14">OCC transactions, auto-retry on conflict (SQLSTATE 40001)</text>
   <text x="112" y="612" fill="#cfc7f5" font-size="14">wallets · lots · bids · holds · settlement · ledger</text>
   <text x="112" y="638" fill="#cfc7f5" font-size="14">FK-free · sequence-free · 1 DDL/txn</text>
@@ -69,7 +69,7 @@
   <text x="662" y="686" fill="#9aa3bd" font-size="13">money never lives here, only ephemeral social state</text>
 
   <!-- footer -->
-  <text x="600" y="730" fill="#8b93ad" font-size="11.5" text-anchor="middle" letter-spacing="0.3">Well-Architected · security: IAM tokens, no static secrets · reliability: active-active 99.999% · performance: edge + single-digit-ms · cost: serverless, scales to zero</text>
+  <text x="600" y="730" fill="#8b93ad" font-size="11" text-anchor="middle" letter-spacing="0.2">Well-Architected · security: IAM tokens, no static secrets · reliability: active-active, 99.99% single-Region (99.999% multi-Region) · performance: edge + single-digit-ms · cost: serverless, scales to zero</text>
   <text x="600" y="752" fill="#6b7390" font-size="13.5" text-anchor="middle">Local dev runs the identical SQL on embedded PGlite, same code path, no AWS required. Correctness is proven by a live contention test.</text>
   <text x="600" y="776" fill="#475063" font-size="12.5" text-anchor="middle">The consistency boundary between the two stores is the architecture.</text>
 </svg>
