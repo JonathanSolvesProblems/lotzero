@@ -173,10 +173,10 @@ async function seedActivity(): Promise<void> {
   const userBy = (h: string) => DEMO_USERS.find((u) => u.handle === h)!;
   const events: { kind: string; text: string; lotId: string; region: string }[] = [];
 
+  // Note: lot_console (English) and lot_genesis (the 1/1 Dutch race lot) are left
+  // pristine on purpose: console stays a clean lot for the e2e suite, and genesis
+  // stays 1/1 so the two-user race demo always works.
   const bidSeq: [string, string, number][] = [
-    ["lot_console", "mara", 2_500_00],
-    ["lot_console", "lena", 2_600_00],
-    ["lot_console", "diego", 2_700_00],
     ["lot_firebird", "lena", 4_000_00],
     ["lot_firebird", "mara", 4_250_00],
     ["lot_neotokyo", "diego", 900_00],
