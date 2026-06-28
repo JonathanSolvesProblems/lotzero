@@ -153,4 +153,77 @@ export async function forceSeed(db: Db): Promise<void> {
       ],
     );
   }
+
+  await seedActivity();
+}
+
+/**
+ * Reset the social firehose (DynamoDB) and place a little *real* activity so the
+ * home board isn't empty and the activity feed matches the live bid counts. These
+ * are genuine bids/claims through the same domain logic, not fabricated feed text.
+ * aria and kenji are left untouched so the demo's two-user race starts clean.
+ */
+async function seedActivity(): Promise<void> {
+  const { placeEnglishBid, claimLot } = await import("../domain/bids");
+  const { resetFeed, seedFeedEvent } = await import("../dynamo/firehose");
+  const { formatUSD } = await import("../money");
+
+  await resetFeed();
+
+  const userBy = (h: string) => DEMO_USERS.find((u) => u.handle === h)!;
+  const events: { kind: string; text: string; lotId: string; region: string }[] = [];
+
+  const bidSeq: [string, string, number][] = [
+    ["lot_console", "mara", 2_500_00],
+    ["lot_console", "lena", 2_600_00],
+    ["lot_console", "diego", 2_700_00],
+    ["lot_firebird", "lena", 4_000_00],
+    ["lot_firebird", "mara", 4_250_00],
+    ["lot_neotokyo", "diego", 900_00],
+    ["lot_neotokyo", "lena", 950_00],
+  ];
+  for (const [lotId, handle, cents] of bidSeq) {
+    const u = userBy(handle);
+    try {
+      const res = await placeEnglishBid(lotId, u.id, cents, u.region);
+      events.push({
+        kind: "bid",
+        text: `${u.avatar} ${u.handle} bid ${formatUSD(res.lot.high_bid_cents)} · ${res.lot.title}`,
+        lotId,
+        region: u.region,
+      });
+    } catch {
+      /* best-effort demo seeding */
+    }
+  }
+
+  const claimSeq: [string, string][] = [
+    ["lot_vip", "diego"],
+    ["lot_vip", "mara"],
+    ["lot_keeb", "lena"],
+    ["lot_keeb", "diego"],
+    ["lot_keeb", "mara"],
+  ];
+  for (const [lotId, handle] of claimSeq) {
+    const u = userBy(handle);
+    try {
+      const res = await claimLot(lotId, u.id, u.region);
+      events.push({
+        kind: "claim",
+        text: `${u.avatar} ${u.handle} claimed ${res.lot.title} for ${formatUSD(res.lot.clearing_cents)} from ${u.region}`,
+        lotId,
+        region: u.region,
+      });
+    } catch {
+      /* best-effort demo seeding */
+    }
+  }
+
+  // Backdate so the feed reads like organic recent activity (newest last in array).
+  const base = Date.now();
+  const gap = 31_000;
+  for (let i = 0; i < events.length; i++) {
+    const e = events[i];
+    await seedFeedEvent(e.kind, e.text, e.lotId, e.region, base - (events.length - 1 - i) * gap);
+  }
 }

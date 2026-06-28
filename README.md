@@ -90,7 +90,7 @@ The core logic lives in [`src/lib/domain/bids.ts`](src/lib/domain/bids.ts).
 ## The proof (measured correctness, not just "it works")
 
 The `/proof` page and the `loadtest` script fire a deliberate global race, many buyers
-across five AWS Regions colliding on a scarce lot at the same instant, and verify the
+tagged across five AWS Regions colliding on a scarce lot at the same instant, and verify the
 invariant holds exactly. Sample run (local, PGlite):
 
 ```
@@ -117,9 +117,9 @@ BASE_URL=https://your-app.vercel.app npm run loadtest
 It exits non-zero if any invariant is ever violated, so it doubles as a CI gate.
 
 > On local PGlite the transactions serialize, so the race is simulated and the invariant is
-> enforced by the same SQL. On **Aurora DSQL** the attempts run with true multi-Region
-> concurrency and the losing transactions hit a real OCC conflict and retry, identical
-> guarantee, real contention.
+> enforced by the same SQL. On **Aurora DSQL** the attempts run with true concurrency
+> against the live cluster and the losing transactions hit a real OCC conflict and retry,
+> identical guarantee, real contention.
 
 ---
 

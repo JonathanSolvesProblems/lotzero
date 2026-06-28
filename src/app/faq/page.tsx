@@ -21,7 +21,7 @@ const FAQS = [
   },
   {
     q: "How is zero oversells proven?",
-    a: "The Proof page fires hundreds of concurrent claims across five AWS Regions and measures the invariants live.",
+    a: "The Proof page fires hundreds of concurrent claims tagged across five AWS Regions and measures the invariants live.",
   },
   {
     q: "What auction types are supported?",

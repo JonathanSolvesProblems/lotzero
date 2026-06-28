@@ -21,8 +21,8 @@ export function LotCard({ lot }: { lot: LotView }) {
   const remaining = lot.qty_total - lot.qty_claimed;
 
   return (
-    <Link href={`/auctions/${lot.id}`} className="group block">
-      <article className="card overflow-hidden transition group-hover:border-[var(--gold-deep)]">
+    <Link href={`/auctions/${lot.id}`} className="group block h-full">
+      <article className="card flex h-full flex-col overflow-hidden transition group-hover:border-[var(--gold-deep)]">
         {/* catalog plate */}
         <div className="relative flex h-32 items-center justify-center overflow-hidden border-b border-[var(--line)] bg-[var(--ink-2)]">
           <span
@@ -43,14 +43,14 @@ export function LotCard({ lot }: { lot: LotView }) {
           </div>
         </div>
 
-        <div className="space-y-3 p-4">
+        <div className="flex flex-1 flex-col p-4">
           <div className="flex items-center justify-between gap-2 text-[10px] uppercase tracking-[0.12em] text-[var(--muted)]">
             <span className="truncate">{lot.category}</span>
             <span className="shrink-0 whitespace-nowrap text-[var(--muted-2)]">{TYPE_LABEL[lot.auction_type]}</span>
           </div>
-          <h3 className="display text-lg leading-snug">{lot.title}</h3>
+          <h3 className="display mt-3 line-clamp-2 min-h-[3.25rem] text-lg leading-snug">{lot.title}</h3>
 
-          <div className="hairline flex items-end justify-between pt-3">
+          <div className="hairline mt-auto flex items-end justify-between pt-3">
             <div>
               <div className="eyebrow">
                 {settled ? "Sold for" : isClaim ? "Current price" : lot.high_bid_cents ? "High bid" : "Opening"}

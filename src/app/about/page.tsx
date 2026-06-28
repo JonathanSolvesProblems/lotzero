@@ -15,7 +15,7 @@ const SECTIONS = [
   },
   {
     title: "Proven, not claimed",
-    body: "A built-in proof fires hundreds of concurrent claims across five AWS Regions and measures the invariants live: zero oversells and zero double-spends, every run.",
+    body: "A built-in proof fires hundreds of concurrent claims tagged across five AWS Regions and measures the invariants live: zero oversells and zero double-spends, every run.",
   },
 ];
 

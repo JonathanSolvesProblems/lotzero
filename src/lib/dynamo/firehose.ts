@@ -269,6 +269,56 @@ export async function pushFeed(kind: string, text: string, lotId: string | null,
   return ev;
 }
 
+/** Wipe the global activity feed. Used by the demo reseed so stale events don't linger. */
+export async function resetFeed(): Promise<void> {
+  if (!usingDynamo()) {
+    mem().feed = [];
+    return;
+  }
+  const { QueryCommand, BatchWriteCommand } = await import("@aws-sdk/lib-dynamodb");
+  const d = await doc();
+  let startKey: Record<string, unknown> | undefined;
+  do {
+    const res = (await d.send(
+      new QueryCommand({
+        TableName: TABLE(),
+        KeyConditionExpression: "pk = :p",
+        ExpressionAttributeValues: { ":p": "FEED#GLOBAL" },
+        ProjectionExpression: "pk, sk",
+        ExclusiveStartKey: startKey,
+      }),
+    )) as { Items?: { pk: string; sk: string }[]; LastEvaluatedKey?: Record<string, unknown> };
+    const items = res.Items ?? [];
+    for (let i = 0; i < items.length; i += 25) {
+      const batch = items.slice(i, i + 25).map((it) => ({ DeleteRequest: { Key: { pk: it.pk, sk: it.sk } } }));
+      if (batch.length) await d.send(new BatchWriteCommand({ RequestItems: { [TABLE()]: batch } }));
+    }
+    startKey = res.LastEvaluatedKey;
+  } while (startKey);
+}
+
+/** Insert a feed event with an explicit timestamp (for backdated demo seeding). */
+export async function seedFeedEvent(
+  kind: string,
+  text: string,
+  lotId: string | null,
+  region: string | null,
+  ts: number,
+): Promise<void> {
+  const ev: FeedEvent = { id: newId("fd"), kind, text, lotId, region, ts };
+  if (usingDynamo()) {
+    const { PutCommand } = await import("@aws-sdk/lib-dynamodb");
+    await (await doc()).send(
+      new PutCommand({
+        TableName: TABLE(),
+        Item: { pk: "FEED#GLOBAL", sk: `${ev.ts}#${ev.id}`, type: "feed", ...ev, ttl: ttlSecs(86_400_000) },
+      }),
+    );
+  } else {
+    mem().feed.push(ev);
+  }
+}
+
 export async function getFeed(limit = 30): Promise<FeedEvent[]> {
   if (usingDynamo()) {
     const { QueryCommand } = await import("@aws-sdk/lib-dynamodb");
