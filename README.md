@@ -9,6 +9,8 @@ section was built in **v0**).
 
 Built for the **H0: Hack the Zero** hackathon · Track 3 (Million-scale global app).
 
+**[Watch the demo](https://www.youtube.com/watch?v=rn1UUG8t9kM)** · **[Live site](https://lotzero-sandy.vercel.app)**
+
 > **Uniqueness claim:** A global live marketplace where the authoritative bid ledger and
 > money movement run on Aurora DSQL's active-active strong consistency, while the
 > million-scale social firehose runs on DynamoDB, with a measured **zero oversells and
