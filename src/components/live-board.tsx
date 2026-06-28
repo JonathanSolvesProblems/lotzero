@@ -5,6 +5,10 @@ import { LotCard } from "./lot-card";
 import { ActivityFeed } from "./activity-feed";
 import type { LotView } from "@/lib/view-types";
 
+// Auto-fit grid: cards keep a sensible min width and grow to fill the row,
+// so the board looks balanced from mobile (1 col) to wide desktop (3-4 cols).
+const GRID = "grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(232px,1fr))]";
+
 export function LiveBoard() {
   const [lots, setLots] = useState<LotView[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -35,7 +39,7 @@ export function LiveBoard() {
   const settled = lots.filter((l) => l.status !== "live");
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
       <div className="space-y-6">
         <section>
           <div className="mb-3 flex items-center gap-2">
@@ -43,13 +47,13 @@ export function LiveBoard() {
             <span className="chip">{live.length} lots</span>
           </div>
           {!loaded ? (
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div className={GRID}>
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="card h-64 animate-pulse opacity-40" />
               ))}
             </div>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div className={GRID}>
               {live.map((l) => (
                 <LotCard key={l.id} lot={l} />
               ))}
@@ -60,7 +64,7 @@ export function LiveBoard() {
         {settled.length > 0 && (
           <section>
             <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">Recently settled</h2>
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div className={GRID}>
               {settled.map((l) => (
                 <LotCard key={l.id} lot={l} />
               ))}
@@ -69,7 +73,7 @@ export function LiveBoard() {
         )}
       </div>
 
-      <aside className="lg:sticky lg:top-20 lg:self-start">
+      <aside className="lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:self-start">
         <ActivityFeed />
       </aside>
     </div>

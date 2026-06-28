@@ -11,7 +11,9 @@ export const DEMO_USERS = [
 ];
 
 const SELLER = "user_house";
-const minsFromNow = (m: number) => new Date(Date.now() + m * 60_000).toISOString();
+// Lots stay live for days so the deployed demo never shows everything "ended"
+// during the judging window. Varied so countdowns differ across lots.
+const daysFromNow = (d: number) => new Date(Date.now() + d * 86_400_000).toISOString();
 
 interface SeedLot {
   id: string;
@@ -37,7 +39,7 @@ export const DEMO_LOTS: SeedLot[] = [
     auction_type: "english",
     start_cents: 2_500_00,
     min_increment_cents: 100_00,
-    ends_at: minsFromNow(180),
+    ends_at: daysFromNow(9),
   },
   {
     id: "lot_firebird",
@@ -47,7 +49,7 @@ export const DEMO_LOTS: SeedLot[] = [
     auction_type: "english",
     start_cents: 4_000_00,
     min_increment_cents: 250_00,
-    ends_at: minsFromNow(95),
+    ends_at: daysFromNow(7),
   },
   {
     id: "lot_neotokyo",
@@ -57,7 +59,7 @@ export const DEMO_LOTS: SeedLot[] = [
     auction_type: "english",
     start_cents: 900_00,
     min_increment_cents: 50_00,
-    ends_at: minsFromNow(40),
+    ends_at: daysFromNow(5),
   },
   {
     id: "lot_genesis",
@@ -70,7 +72,7 @@ export const DEMO_LOTS: SeedLot[] = [
     dutch_drop_cents: 20_00,
     dutch_interval_secs: 5,
     qty_total: 1,
-    ends_at: minsFromNow(30),
+    ends_at: daysFromNow(6),
   },
   {
     id: "lot_vip",
@@ -83,7 +85,7 @@ export const DEMO_LOTS: SeedLot[] = [
     dutch_drop_cents: 25_00,
     dutch_interval_secs: 4,
     qty_total: 5,
-    ends_at: minsFromNow(60),
+    ends_at: daysFromNow(8),
   },
   {
     id: "lot_keeb",
@@ -93,7 +95,7 @@ export const DEMO_LOTS: SeedLot[] = [
     auction_type: "drop",
     start_cents: 180_00,
     qty_total: 50,
-    ends_at: minsFromNow(120),
+    ends_at: daysFromNow(12),
   },
 ];
 
