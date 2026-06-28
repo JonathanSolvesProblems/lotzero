@@ -46,6 +46,7 @@ export function RegionDemo() {
       <div className="flex items-center gap-2">
         <span className="chip">🌐 active-active</span>
         <h3 className="text-sm font-semibold">Cross-Region strong consistency</h3>
+        <span className="chip ml-auto">optional</span>
       </div>
       <p className="text-sm text-[var(--muted)]">
         Write through one Region&apos;s endpoint of a peered Aurora DSQL cluster, then read it
@@ -54,15 +55,15 @@ export function RegionDemo() {
       </p>
 
       {!status.configured ? (
-        <div className="rounded-xl border border-[var(--border-2)] bg-[var(--bg-2)] p-4 text-sm">
-          <div className="mb-1 font-medium text-[var(--warn)]">Not configured</div>
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-2)] p-4 text-sm">
+          <div className="mb-1 font-medium text-[var(--fg)]">Single-Region deployment, multi-Region ready</div>
           <p className="text-[var(--muted)]">
-            Provision a <span className="text-[var(--fg)]">multi-Region peered</span> Aurora DSQL
-            cluster and set <code className="mono">DSQL_CLUSTER_ENDPOINT</code> +{" "}
+            This optional demo lights up a cross-Region read on a multi-Region peered Aurora DSQL
+            cluster. The deployed cluster runs in a single Region (us-east-2) to keep the hackathon
+            footprint small, so it stays off here, by design. The code is already wired: set{" "}
             <code className="mono">DSQL_CLUSTER_ENDPOINT_2</code> (with{" "}
-            <code className="mono">DSQL_REGION</code> / <code className="mono">DSQL_REGION_2</code>)
-            to enable this live demo. The code is already wired, it turns on the moment those env
-            vars exist.
+            <code className="mono">DSQL_REGION_2</code>) and it turns on with no code changes. The
+            contention proof above already runs on the real cluster.
           </p>
         </div>
       ) : (

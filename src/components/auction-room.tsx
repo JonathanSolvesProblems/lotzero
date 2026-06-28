@@ -88,6 +88,7 @@ export function AuctionRoom({ lotId }: { lotId: string }) {
   const isClaim = lot.auction_type !== "english";
   const settled = lot.status === "settled";
   const remaining = lot.qty_total - lot.qty_claimed;
+  const available = user ? user.balance_cents - user.held_cents : 0;
 
   const act = async (fn: () => Promise<{ ok: boolean; status: number; data: Record<string, unknown> }>, okMsg: string) => {
     if (!user) return showFlash("err", "Pick an identity first");
@@ -97,8 +98,12 @@ export function AuctionRoom({ lotId }: { lotId: string }) {
     } else {
       const d = r.data as { message?: string; error?: string; detail?: number };
       let msg = d.message || d.error || "Rejected";
-      if (d.error === "too_low" && d.detail) msg = `Outbid, minimum is now ${formatUSD(d.detail)}`;
-      if (d.error === "insufficient" && typeof d.detail === "number") msg = `Insufficient, ${formatUSD(d.detail)} available`;
+      if (d.error === "too_low" && d.detail) msg = `Outbid, the minimum is now ${formatUSD(d.detail)}`;
+      if (d.error === "insufficient")
+        msg =
+          typeof d.detail === "number"
+            ? `Not enough funds. You have ${formatUSD(d.detail)} available, top up your wallet to bid higher.`
+            : "Not enough available funds, top up your wallet to bid.";
       showFlash("err", msg);
     }
     await Promise.all([refresh(), reload()]);
@@ -163,13 +168,14 @@ export function AuctionRoom({ lotId }: { lotId: string }) {
 
               {!settled &&
                 (isClaim ? (
-                  <ClaimPanel snap={snap} region={region} onClaim={() =>
+                  <ClaimPanel snap={snap} region={region} available={available} onClaim={() =>
                     act(() => postJSON(`/api/auctions/${lotId}/claim`, { userId: user?.id, region }), "Claimed! 🎉")
                   } />
                 ) : (
                   <BidPanel
                     snap={snap}
                     region={region}
+                    available={available}
                     onBid={(amountCents) =>
                       act(
                         () => postJSON(`/api/auctions/${lotId}/bid`, { userId: user?.id, region, amountCents }),
@@ -242,7 +248,7 @@ function Stat({ label, value, big }: { label: string; value: React.ReactNode; bi
   );
 }
 
-function BidPanel({ snap, region, onBid }: { snap: Snapshot; region: string; onBid: (cents: number) => void }) {
+function BidPanel({ snap, region, available, onBid }: { snap: Snapshot; region: string; available: number; onBid: (cents: number) => void }) {
   const [val, setVal] = useState<number>(snap.min_next_cents);
   const minSeen = useRef(snap.min_next_cents);
   useEffect(() => {
@@ -254,6 +260,7 @@ function BidPanel({ snap, region, onBid }: { snap: Snapshot; region: string; onB
   }, [snap.min_next_cents]);
 
   const inc = snap.lot.min_increment_cents;
+  const short = val > available;
   return (
     <div className="space-y-3 rounded-xl border border-[var(--border-2)] bg-[var(--surface-2)] p-4">
       <div className="flex items-center justify-between text-sm">
@@ -261,7 +268,11 @@ function BidPanel({ snap, region, onBid }: { snap: Snapshot; region: string; onB
         <span className="chip">bidding from 🌐 {region}</span>
       </div>
       <div className="flex items-center gap-2">
-        <div className="flex flex-1 items-center rounded-xl border border-[var(--border-2)] bg-[var(--bg-2)] px-3">
+        <div
+          className={`flex flex-1 items-center rounded-xl border bg-[var(--bg-2)] px-3 ${
+            short ? "border-[var(--warn)]/60" : "border-[var(--border-2)]"
+          }`}
+        >
           <span className="text-[var(--muted)]">$</span>
           <input
             type="number"
@@ -277,14 +288,28 @@ function BidPanel({ snap, region, onBid }: { snap: Snapshot; region: string; onB
           </button>
         ))}
       </div>
-      <button className="btn btn-primary w-full" disabled={val < snap.min_next_cents} onClick={() => onBid(val)}>
-        Place bid · {formatUSD(val)}
+      {short && (
+        <p className="text-xs text-[var(--warn)]">
+          You have {formatUSD(available)} available (held funds excluded).{" "}
+          <Link href="/wallet" className="underline hover:text-[var(--fg)]">
+            Top up your wallet
+          </Link>{" "}
+          to bid this high.
+        </p>
+      )}
+      <button
+        className="btn btn-primary w-full"
+        disabled={val < snap.min_next_cents || short}
+        onClick={() => onBid(val)}
+      >
+        {short ? "Not enough funds for this bid" : `Place bid · ${formatUSD(val)}`}
       </button>
     </div>
   );
 }
 
-function ClaimPanel({ snap, region, onClaim }: { snap: Snapshot; region: string; onClaim: () => void }) {
+function ClaimPanel({ snap, region, available, onClaim }: { snap: Snapshot; region: string; available: number; onClaim: () => void }) {
+  const short = snap.current_price_cents > available;
   return (
     <div className="space-y-3 rounded-xl border border-[var(--border-2)] bg-[var(--surface-2)] p-4">
       <div className="flex items-center justify-between text-sm">
@@ -293,13 +318,23 @@ function ClaimPanel({ snap, region, onClaim }: { snap: Snapshot; region: string;
         </span>
         <span className="chip">claiming from 🌐 {region}</span>
       </div>
-      <button className="btn btn-primary w-full text-lg" onClick={onClaim}>
-        Claim now · {formatUSD(snap.current_price_cents)}
+      <button className="btn btn-primary w-full text-lg" disabled={short} onClick={onClaim}>
+        {short ? "Not enough funds to claim" : `Claim now · ${formatUSD(snap.current_price_cents)}`}
       </button>
-      <p className="text-center text-xs text-[var(--muted)]">
-        First claim on Earth wins. DSQL guarantees exactly {snap.lot.qty_total} unit
-        {snap.lot.qty_total === 1 ? "" : "s"} can ever be sold.
-      </p>
+      {short ? (
+        <p className="text-center text-xs text-[var(--warn)]">
+          You have {formatUSD(available)} available.{" "}
+          <Link href="/wallet" className="underline hover:text-[var(--fg)]">
+            Top up your wallet
+          </Link>{" "}
+          to claim.
+        </p>
+      ) : (
+        <p className="text-center text-xs text-[var(--muted)]">
+          First claim on Earth wins. DSQL guarantees exactly {snap.lot.qty_total} unit
+          {snap.lot.qty_total === 1 ? "" : "s"} can ever be sold.
+        </p>
+      )}
     </div>
   );
 }
